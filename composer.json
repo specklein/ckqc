@@ -1,0 +1,9 @@
+{
+    "require": {
+        "phpunit/phpunit": "4.8",
+        "league/csv": "^8.0",
+        "aws/aws-sdk-php": "^3.14",
+        "monolog/monolog": "^1.17"
+    }
+}
+
