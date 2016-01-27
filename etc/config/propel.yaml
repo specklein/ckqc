@@ -1,0 +1,21 @@
+propel:
+  database:
+      connections:
+          ck-order-xml:
+              adapter: mysql
+              classname: Propel\Runtime\Connection\ConnectionWrapper
+              dsn: "mysql:host=localhost;dbname=cklein-qc"
+              user: ckqc
+              password: CKlein@123
+              attributes:
+              settings:
+		charset: utf8
+
+  runtime:
+      defaultConnection: ck-order-xml
+      connections:
+          - ck-order-xml
+  generator:
+      defaultConnection: ck-order-xml
+      connections:
+          - ck-order-xml
