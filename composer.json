@@ -1,8 +1,11 @@
 {
     "autoload" : {
 		"psr-4" : {
-			"Spe\\Ckqc\\" : "src"
-		}
+			"Spe\\Ckqc\\" : "src",
+			"":"src"
+		},
+		"classmap": ["generated-classes/"]
+		
 	},
 	"name" : "spe/ckqc",
     "require": {

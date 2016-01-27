@@ -1,21 +1,28 @@
 propel:
-  database:
+    paths:
+        # The directory where Propel expects to find your `schema.xml` file.
+        schemaDir: /home/cklein/ckqc/etc/config
+
+        # The directory where Propel should output generated object model classes.
+        phpDir: /home/cklein/ckqc/generated-classes
+
+    database:
       connections:
           ck-order-xml:
               adapter: mysql
               classname: Propel\Runtime\Connection\ConnectionWrapper
-              dsn: "mysql:host=localhost;dbname=cklein-qc"
-              user: ckqc
-              password: CKlein@123
+              dsn: "mysql:host=localhost;dbname=davis"
+              user: root
+              password: 
               attributes:
               settings:
-		charset: utf8
+               charset: utf8
 
-  runtime:
+    runtime:
       defaultConnection: ck-order-xml
       connections:
           - ck-order-xml
-  generator:
+    generator:
       defaultConnection: ck-order-xml
       connections:
           - ck-order-xml
