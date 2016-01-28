@@ -16,13 +16,23 @@ propel:
               password: 
               attributes:
               settings:
+          supplizer:
+              adapter: mysql
+              classname: Propel\Runtime\Connection\ConnectionWrapper
+              dsn: "mysql:host=localhost;dbname=davis"
+              user: root
+              password: 
+              attributes:
+              settings:
                charset: utf8
 
     runtime:
       defaultConnection: ck-order-xml
       connections:
           - ck-order-xml
+          - supplizer
     generator:
       defaultConnection: ck-order-xml
       connections:
           - ck-order-xml
+          - supplizer

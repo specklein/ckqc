@@ -23,12 +23,16 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCKOrderXmlQuery orderByOrderId($order = Criteria::ASC) Order by the order_id column
  * @method     ChildCKOrderXmlQuery orderByOrderXml($order = Criteria::ASC) Order by the order_xml column
  * @method     ChildCKOrderXmlQuery orderByOrderDate($order = Criteria::ASC) Order by the order_date column
+ * @method     ChildCKOrderXmlQuery orderByXmlFilename($order = Criteria::ASC) Order by the xml_filename column
+ * @method     ChildCKOrderXmlQuery orderByXmlFilesize($order = Criteria::ASC) Order by the xml_filesize column
  * @method     ChildCKOrderXmlQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  *
  * @method     ChildCKOrderXmlQuery groupById() Group by the id column
  * @method     ChildCKOrderXmlQuery groupByOrderId() Group by the order_id column
  * @method     ChildCKOrderXmlQuery groupByOrderXml() Group by the order_xml column
  * @method     ChildCKOrderXmlQuery groupByOrderDate() Group by the order_date column
+ * @method     ChildCKOrderXmlQuery groupByXmlFilename() Group by the xml_filename column
+ * @method     ChildCKOrderXmlQuery groupByXmlFilesize() Group by the xml_filesize column
  * @method     ChildCKOrderXmlQuery groupByCreatedAt() Group by the created_at column
  *
  * @method     ChildCKOrderXmlQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -46,6 +50,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCKOrderXml findOneByOrderId(string $order_id) Return the first ChildCKOrderXml filtered by the order_id column
  * @method     ChildCKOrderXml findOneByOrderXml(string $order_xml) Return the first ChildCKOrderXml filtered by the order_xml column
  * @method     ChildCKOrderXml findOneByOrderDate(string $order_date) Return the first ChildCKOrderXml filtered by the order_date column
+ * @method     ChildCKOrderXml findOneByXmlFilename(string $xml_filename) Return the first ChildCKOrderXml filtered by the xml_filename column
+ * @method     ChildCKOrderXml findOneByXmlFilesize(int $xml_filesize) Return the first ChildCKOrderXml filtered by the xml_filesize column
  * @method     ChildCKOrderXml findOneByCreatedAt(string $created_at) Return the first ChildCKOrderXml filtered by the created_at column *
 
  * @method     ChildCKOrderXml requirePk($key, ConnectionInterface $con = null) Return the ChildCKOrderXml by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -55,6 +61,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCKOrderXml requireOneByOrderId(string $order_id) Return the first ChildCKOrderXml filtered by the order_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCKOrderXml requireOneByOrderXml(string $order_xml) Return the first ChildCKOrderXml filtered by the order_xml column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCKOrderXml requireOneByOrderDate(string $order_date) Return the first ChildCKOrderXml filtered by the order_date column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildCKOrderXml requireOneByXmlFilename(string $xml_filename) Return the first ChildCKOrderXml filtered by the xml_filename column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildCKOrderXml requireOneByXmlFilesize(int $xml_filesize) Return the first ChildCKOrderXml filtered by the xml_filesize column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCKOrderXml requireOneByCreatedAt(string $created_at) Return the first ChildCKOrderXml filtered by the created_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildCKOrderXml[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildCKOrderXml objects based on current ModelCriteria
@@ -62,6 +70,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCKOrderXml[]|ObjectCollection findByOrderId(string $order_id) Return ChildCKOrderXml objects filtered by the order_id column
  * @method     ChildCKOrderXml[]|ObjectCollection findByOrderXml(string $order_xml) Return ChildCKOrderXml objects filtered by the order_xml column
  * @method     ChildCKOrderXml[]|ObjectCollection findByOrderDate(string $order_date) Return ChildCKOrderXml objects filtered by the order_date column
+ * @method     ChildCKOrderXml[]|ObjectCollection findByXmlFilename(string $xml_filename) Return ChildCKOrderXml objects filtered by the xml_filename column
+ * @method     ChildCKOrderXml[]|ObjectCollection findByXmlFilesize(int $xml_filesize) Return ChildCKOrderXml objects filtered by the xml_filesize column
  * @method     ChildCKOrderXml[]|ObjectCollection findByCreatedAt(string $created_at) Return ChildCKOrderXml objects filtered by the created_at column
  * @method     ChildCKOrderXml[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
@@ -155,7 +165,7 @@ abstract class CKOrderXmlQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, order_id, order_xml, order_date, created_at FROM cklien_order_xml WHERE id = :p0';
+        $sql = 'SELECT id, order_id, order_xml, order_date, xml_filename, xml_filesize, created_at FROM cklien_order_xml WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -385,6 +395,76 @@ abstract class CKOrderXmlQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CKOrderXmlTableMap::COL_ORDER_DATE, $orderDate, $comparison);
+    }
+
+    /**
+     * Filter the query on the xml_filename column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByXmlFilename('fooValue');   // WHERE xml_filename = 'fooValue'
+     * $query->filterByXmlFilename('%fooValue%'); // WHERE xml_filename LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $xmlFilename The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildCKOrderXmlQuery The current query, for fluid interface
+     */
+    public function filterByXmlFilename($xmlFilename = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($xmlFilename)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $xmlFilename)) {
+                $xmlFilename = str_replace('*', '%', $xmlFilename);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(CKOrderXmlTableMap::COL_XML_FILENAME, $xmlFilename, $comparison);
+    }
+
+    /**
+     * Filter the query on the xml_filesize column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByXmlFilesize(1234); // WHERE xml_filesize = 1234
+     * $query->filterByXmlFilesize(array(12, 34)); // WHERE xml_filesize IN (12, 34)
+     * $query->filterByXmlFilesize(array('min' => 12)); // WHERE xml_filesize > 12
+     * </code>
+     *
+     * @param     mixed $xmlFilesize The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildCKOrderXmlQuery The current query, for fluid interface
+     */
+    public function filterByXmlFilesize($xmlFilesize = null, $comparison = null)
+    {
+        if (is_array($xmlFilesize)) {
+            $useMinMax = false;
+            if (isset($xmlFilesize['min'])) {
+                $this->addUsingAlias(CKOrderXmlTableMap::COL_XML_FILESIZE, $xmlFilesize['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($xmlFilesize['max'])) {
+                $this->addUsingAlias(CKOrderXmlTableMap::COL_XML_FILESIZE, $xmlFilesize['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CKOrderXmlTableMap::COL_XML_FILESIZE, $xmlFilesize, $comparison);
     }
 
     /**

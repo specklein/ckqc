@@ -90,6 +90,20 @@ abstract class CKOrderXml implements ActiveRecordInterface
     protected $order_date;
 
     /**
+     * The value for the xml_filename field.
+     *
+     * @var        string
+     */
+    protected $xml_filename;
+
+    /**
+     * The value for the xml_filesize field.
+     *
+     * @var        int
+     */
+    protected $xml_filesize;
+
+    /**
      * The value for the created_at field.
      *
      * @var        \DateTime
@@ -380,6 +394,26 @@ abstract class CKOrderXml implements ActiveRecordInterface
     }
 
     /**
+     * Get the [xml_filename] column value.
+     *
+     * @return string
+     */
+    public function getXmlFilename()
+    {
+        return $this->xml_filename;
+    }
+
+    /**
+     * Get the [xml_filesize] column value.
+     *
+     * @return int
+     */
+    public function getXmlFilesize()
+    {
+        return $this->xml_filesize;
+    }
+
+    /**
      * Get the [optionally formatted] temporal [created_at] column value.
      *
      *
@@ -480,6 +514,46 @@ abstract class CKOrderXml implements ActiveRecordInterface
     } // setOrderDate()
 
     /**
+     * Set the value of [xml_filename] column.
+     *
+     * @param string $v new value
+     * @return $this|\CKOrderXml The current object (for fluent API support)
+     */
+    public function setXmlFilename($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->xml_filename !== $v) {
+            $this->xml_filename = $v;
+            $this->modifiedColumns[CKOrderXmlTableMap::COL_XML_FILENAME] = true;
+        }
+
+        return $this;
+    } // setXmlFilename()
+
+    /**
+     * Set the value of [xml_filesize] column.
+     *
+     * @param int $v new value
+     * @return $this|\CKOrderXml The current object (for fluent API support)
+     */
+    public function setXmlFilesize($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->xml_filesize !== $v) {
+            $this->xml_filesize = $v;
+            $this->modifiedColumns[CKOrderXmlTableMap::COL_XML_FILESIZE] = true;
+        }
+
+        return $this;
+    } // setXmlFilesize()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param  mixed $v string, integer (timestamp), or \DateTime value.
@@ -550,7 +624,13 @@ abstract class CKOrderXml implements ActiveRecordInterface
             }
             $this->order_date = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : CKOrderXmlTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : CKOrderXmlTableMap::translateFieldName('XmlFilename', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->xml_filename = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : CKOrderXmlTableMap::translateFieldName('XmlFilesize', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->xml_filesize = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : CKOrderXmlTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -563,7 +643,7 @@ abstract class CKOrderXml implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = CKOrderXmlTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = CKOrderXmlTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\CKOrderXml'), 0, $e);
@@ -772,6 +852,12 @@ abstract class CKOrderXml implements ActiveRecordInterface
         if ($this->isColumnModified(CKOrderXmlTableMap::COL_ORDER_DATE)) {
             $modifiedColumns[':p' . $index++]  = 'order_date';
         }
+        if ($this->isColumnModified(CKOrderXmlTableMap::COL_XML_FILENAME)) {
+            $modifiedColumns[':p' . $index++]  = 'xml_filename';
+        }
+        if ($this->isColumnModified(CKOrderXmlTableMap::COL_XML_FILESIZE)) {
+            $modifiedColumns[':p' . $index++]  = 'xml_filesize';
+        }
         if ($this->isColumnModified(CKOrderXmlTableMap::COL_CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'created_at';
         }
@@ -797,6 +883,12 @@ abstract class CKOrderXml implements ActiveRecordInterface
                         break;
                     case 'order_date':
                         $stmt->bindValue($identifier, $this->order_date ? $this->order_date->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
+                        break;
+                    case 'xml_filename':
+                        $stmt->bindValue($identifier, $this->xml_filename, PDO::PARAM_STR);
+                        break;
+                    case 'xml_filesize':
+                        $stmt->bindValue($identifier, $this->xml_filesize, PDO::PARAM_INT);
                         break;
                     case 'created_at':
                         $stmt->bindValue($identifier, $this->created_at ? $this->created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
@@ -876,6 +968,12 @@ abstract class CKOrderXml implements ActiveRecordInterface
                 return $this->getOrderDate();
                 break;
             case 4:
+                return $this->getXmlFilename();
+                break;
+            case 5:
+                return $this->getXmlFilesize();
+                break;
+            case 6:
                 return $this->getCreatedAt();
                 break;
             default:
@@ -911,14 +1009,16 @@ abstract class CKOrderXml implements ActiveRecordInterface
             $keys[1] => $this->getOrderId(),
             $keys[2] => $this->getOrderXml(),
             $keys[3] => $this->getOrderDate(),
-            $keys[4] => $this->getCreatedAt(),
+            $keys[4] => $this->getXmlFilename(),
+            $keys[5] => $this->getXmlFilesize(),
+            $keys[6] => $this->getCreatedAt(),
         );
         if ($result[$keys[3]] instanceof \DateTime) {
             $result[$keys[3]] = $result[$keys[3]]->format('c');
         }
 
-        if ($result[$keys[4]] instanceof \DateTime) {
-            $result[$keys[4]] = $result[$keys[4]]->format('c');
+        if ($result[$keys[6]] instanceof \DateTime) {
+            $result[$keys[6]] = $result[$keys[6]]->format('c');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -972,6 +1072,12 @@ abstract class CKOrderXml implements ActiveRecordInterface
                 $this->setOrderDate($value);
                 break;
             case 4:
+                $this->setXmlFilename($value);
+                break;
+            case 5:
+                $this->setXmlFilesize($value);
+                break;
+            case 6:
                 $this->setCreatedAt($value);
                 break;
         } // switch()
@@ -1013,7 +1119,13 @@ abstract class CKOrderXml implements ActiveRecordInterface
             $this->setOrderDate($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setCreatedAt($arr[$keys[4]]);
+            $this->setXmlFilename($arr[$keys[4]]);
+        }
+        if (array_key_exists($keys[5], $arr)) {
+            $this->setXmlFilesize($arr[$keys[5]]);
+        }
+        if (array_key_exists($keys[6], $arr)) {
+            $this->setCreatedAt($arr[$keys[6]]);
         }
     }
 
@@ -1067,6 +1179,12 @@ abstract class CKOrderXml implements ActiveRecordInterface
         }
         if ($this->isColumnModified(CKOrderXmlTableMap::COL_ORDER_DATE)) {
             $criteria->add(CKOrderXmlTableMap::COL_ORDER_DATE, $this->order_date);
+        }
+        if ($this->isColumnModified(CKOrderXmlTableMap::COL_XML_FILENAME)) {
+            $criteria->add(CKOrderXmlTableMap::COL_XML_FILENAME, $this->xml_filename);
+        }
+        if ($this->isColumnModified(CKOrderXmlTableMap::COL_XML_FILESIZE)) {
+            $criteria->add(CKOrderXmlTableMap::COL_XML_FILESIZE, $this->xml_filesize);
         }
         if ($this->isColumnModified(CKOrderXmlTableMap::COL_CREATED_AT)) {
             $criteria->add(CKOrderXmlTableMap::COL_CREATED_AT, $this->created_at);
@@ -1160,6 +1278,8 @@ abstract class CKOrderXml implements ActiveRecordInterface
         $copyObj->setOrderId($this->getOrderId());
         $copyObj->setOrderXml($this->getOrderXml());
         $copyObj->setOrderDate($this->getOrderDate());
+        $copyObj->setXmlFilename($this->getXmlFilename());
+        $copyObj->setXmlFilesize($this->getXmlFilesize());
         $copyObj->setCreatedAt($this->getCreatedAt());
         if ($makeNew) {
             $copyObj->setNew(true);
@@ -1200,6 +1320,8 @@ abstract class CKOrderXml implements ActiveRecordInterface
         $this->order_id = null;
         $this->order_xml = null;
         $this->order_date = null;
+        $this->xml_filename = null;
+        $this->xml_filesize = null;
         $this->created_at = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();

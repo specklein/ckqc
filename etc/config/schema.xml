@@ -57,6 +57,8 @@
         <column name="order_id" type="varchar" size="50" required="true" />
         <column name="order_xml" type="clob" required="true" />
         <column name="order_date" type="timestamp" required="true" />
+        <column name="xml_filename" type="varchar" size="120"  />
+        <column name="xml_filesize" type="integer"  />
         <column name="created_at" type="timestamp" required="false" />
 
         <!--

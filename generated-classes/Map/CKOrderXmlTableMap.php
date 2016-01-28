@@ -59,7 +59,7 @@ class CKOrderXmlTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 7;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class CKOrderXmlTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /**
      * the column name for the id field
@@ -92,6 +92,16 @@ class CKOrderXmlTableMap extends TableMap
     const COL_ORDER_DATE = 'cklien_order_xml.order_date';
 
     /**
+     * the column name for the xml_filename field
+     */
+    const COL_XML_FILENAME = 'cklien_order_xml.xml_filename';
+
+    /**
+     * the column name for the xml_filesize field
+     */
+    const COL_XML_FILESIZE = 'cklien_order_xml.xml_filesize';
+
+    /**
      * the column name for the created_at field
      */
     const COL_CREATED_AT = 'cklien_order_xml.created_at';
@@ -108,11 +118,11 @@ class CKOrderXmlTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'OrderId', 'OrderXml', 'OrderDate', 'CreatedAt', ),
-        self::TYPE_CAMELNAME     => array('id', 'orderId', 'orderXml', 'orderDate', 'createdAt', ),
-        self::TYPE_COLNAME       => array(CKOrderXmlTableMap::COL_ID, CKOrderXmlTableMap::COL_ORDER_ID, CKOrderXmlTableMap::COL_ORDER_XML, CKOrderXmlTableMap::COL_ORDER_DATE, CKOrderXmlTableMap::COL_CREATED_AT, ),
-        self::TYPE_FIELDNAME     => array('id', 'order_id', 'order_xml', 'order_date', 'created_at', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id', 'OrderId', 'OrderXml', 'OrderDate', 'XmlFilename', 'XmlFilesize', 'CreatedAt', ),
+        self::TYPE_CAMELNAME     => array('id', 'orderId', 'orderXml', 'orderDate', 'xmlFilename', 'xmlFilesize', 'createdAt', ),
+        self::TYPE_COLNAME       => array(CKOrderXmlTableMap::COL_ID, CKOrderXmlTableMap::COL_ORDER_ID, CKOrderXmlTableMap::COL_ORDER_XML, CKOrderXmlTableMap::COL_ORDER_DATE, CKOrderXmlTableMap::COL_XML_FILENAME, CKOrderXmlTableMap::COL_XML_FILESIZE, CKOrderXmlTableMap::COL_CREATED_AT, ),
+        self::TYPE_FIELDNAME     => array('id', 'order_id', 'order_xml', 'order_date', 'xml_filename', 'xml_filesize', 'created_at', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -122,11 +132,11 @@ class CKOrderXmlTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'OrderId' => 1, 'OrderXml' => 2, 'OrderDate' => 3, 'CreatedAt' => 4, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'orderId' => 1, 'orderXml' => 2, 'orderDate' => 3, 'createdAt' => 4, ),
-        self::TYPE_COLNAME       => array(CKOrderXmlTableMap::COL_ID => 0, CKOrderXmlTableMap::COL_ORDER_ID => 1, CKOrderXmlTableMap::COL_ORDER_XML => 2, CKOrderXmlTableMap::COL_ORDER_DATE => 3, CKOrderXmlTableMap::COL_CREATED_AT => 4, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'order_id' => 1, 'order_xml' => 2, 'order_date' => 3, 'created_at' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'OrderId' => 1, 'OrderXml' => 2, 'OrderDate' => 3, 'XmlFilename' => 4, 'XmlFilesize' => 5, 'CreatedAt' => 6, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'orderId' => 1, 'orderXml' => 2, 'orderDate' => 3, 'xmlFilename' => 4, 'xmlFilesize' => 5, 'createdAt' => 6, ),
+        self::TYPE_COLNAME       => array(CKOrderXmlTableMap::COL_ID => 0, CKOrderXmlTableMap::COL_ORDER_ID => 1, CKOrderXmlTableMap::COL_ORDER_XML => 2, CKOrderXmlTableMap::COL_ORDER_DATE => 3, CKOrderXmlTableMap::COL_XML_FILENAME => 4, CKOrderXmlTableMap::COL_XML_FILESIZE => 5, CKOrderXmlTableMap::COL_CREATED_AT => 6, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'order_id' => 1, 'order_xml' => 2, 'order_date' => 3, 'xml_filename' => 4, 'xml_filesize' => 5, 'created_at' => 6, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -150,6 +160,8 @@ class CKOrderXmlTableMap extends TableMap
         $this->addColumn('order_id', 'OrderId', 'VARCHAR', true, 50, null);
         $this->addColumn('order_xml', 'OrderXml', 'CLOB', true, null, null);
         $this->addColumn('order_date', 'OrderDate', 'TIMESTAMP', true, null, null);
+        $this->addColumn('xml_filename', 'XmlFilename', 'VARCHAR', false, 120, null);
+        $this->addColumn('xml_filesize', 'XmlFilesize', 'INTEGER', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
     } // initialize()
 
@@ -305,12 +317,16 @@ class CKOrderXmlTableMap extends TableMap
             $criteria->addSelectColumn(CKOrderXmlTableMap::COL_ORDER_ID);
             $criteria->addSelectColumn(CKOrderXmlTableMap::COL_ORDER_XML);
             $criteria->addSelectColumn(CKOrderXmlTableMap::COL_ORDER_DATE);
+            $criteria->addSelectColumn(CKOrderXmlTableMap::COL_XML_FILENAME);
+            $criteria->addSelectColumn(CKOrderXmlTableMap::COL_XML_FILESIZE);
             $criteria->addSelectColumn(CKOrderXmlTableMap::COL_CREATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.order_id');
             $criteria->addSelectColumn($alias . '.order_xml');
             $criteria->addSelectColumn($alias . '.order_date');
+            $criteria->addSelectColumn($alias . '.xml_filename');
+            $criteria->addSelectColumn($alias . '.xml_filesize');
             $criteria->addSelectColumn($alias . '.created_at');
         }
     }
