@@ -1,27 +1,31 @@
 <?php
 
-namespace SPE\CKlein\Models;
 
-class Order {
+namespace SPE\CKlein\Models;
+/*
+Class that holds values of all fields found in the revenue report
+related to one orderId. 
+*/
+class RevenueOrder {
     
     private $orderId;
+    private $orderDate;
     private $orderLines = array();
     private $orderLineCount;
-    private $orderDate;
     
-    public getOrderLines(){
+    public function getOrderLines(){
         return $this->orderLines;
     }
     
     /**
-    * @param Order_Models_OrderLine
+    * @param RevenueOrderLine
     */
     public function addOrderLine($orderLine) {
         $this->orderLines[] = $orderLine;
     }
     
     /**
-    * @param array Order_Models_OrderLine
+    * @param array RevenueOrderLine
     */
    public function setOrderLines($orderLines) {
       $this->orderLines = $orderLines;
@@ -53,6 +57,20 @@ class Order {
     */
    public function setOrderDate($orderDate) {
       $this->orderDate = $orderDate;
+   }
+   
+   /**
+    * 
+    */
+   public function getOrderId() {
+      return $this->orderId ;
+   }
+   
+   /**
+    * @param string $orderDate
+    */
+   public function setOrderId($orderId) {
+      $this->orderId = $orderId;
    }
    
 

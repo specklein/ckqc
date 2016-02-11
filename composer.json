@@ -10,10 +10,11 @@
 	"name" : "spe/ckqc",
     "require": {
         "phpunit/phpunit": "4.8",
+        "hassankhan/config": "^0.9.1",
         "league/csv": "^8.0",
         "aws/aws-sdk-php": "^3.14",
         "monolog/monolog": "^1.17",
-        "propel/propel": "~2.0@dev"
+        "propel/propel": "~2.0@dev",
+        "catfan/Medoo": "^1.0"
     }
 }
-

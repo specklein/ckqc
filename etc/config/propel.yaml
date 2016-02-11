@@ -11,7 +11,7 @@ propel:
           ck-order-xml:
               adapter: mysql
               classname: Propel\Runtime\Connection\ConnectionWrapper
-              dsn: "mysql:host=localhost;dbname=davis"
+              dsn: "mysql:host=localhost;dbname=supplizer_clarins_uat"
               user: root
               password: 
               attributes:
@@ -19,7 +19,7 @@ propel:
           supplizer:
               adapter: mysql
               classname: Propel\Runtime\Connection\ConnectionWrapper
-              dsn: "mysql:host=localhost;dbname=davis"
+              dsn: "mysql:host=localhost;dbname=supplizer_clarins_uat"
               user: root
               password: 
               attributes:
