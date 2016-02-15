@@ -14,31 +14,7 @@ $csvRecords = $revenueReport->getCsvRecords()->setOffset(1)->fetchAll();
 
 Registry::getInstance()->add('csvRecords',$csvRecords);
 
-$revenueOrdersModel = RevenueCSV2Model::transform($csvRecords);
+$revenueReportModel = RevenueCSV2Model::transform($csvRecords);
 
-Registry::getInstance()->add('revOrdersModel',$revenueOrdersModel);
-
-$database = new medoo([
-	// required
-	'database_type' => 'mysql',
-	'database_name' => 'supplizer_clarins_uat',
-	'server' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'charset' => 'utf8',
- 
-	// [optional]
-	'port' => 3306,
- 
-	// [optional] Table prefix
-	'prefix' => '',
- 
-	// driver_option for connection, read more from http://www.php.net/manual/en/pdo.setattribute.php
-	'option' => [
-		PDO::ATTR_CASE => PDO::CASE_NATURAL
-	]
-]);
-
-$ordersFromDb = $database->query('select * from dem_order_header limit 2')->fetchAll();
-
+Registry::getInstance()->add('revReportModel',$revenueReportModel);
 

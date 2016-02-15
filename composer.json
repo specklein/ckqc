@@ -9,7 +9,7 @@
 	},
 	"name" : "spe/ckqc",
     "require": {
-        "phpunit/phpunit": "4.8",
+        "phpunit/phpunit": "5.2",
         "hassankhan/config": "^0.9.1",
         "league/csv": "^8.0",
         "aws/aws-sdk-php": "^3.14",

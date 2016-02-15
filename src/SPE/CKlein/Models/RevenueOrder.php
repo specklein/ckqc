@@ -11,12 +11,55 @@ class RevenueOrder {
     private $orderId;
     private $orderDate;
     private $orderLines = array();
+    private $shipmentLines = array();
     private $orderLineCount;
+    private $shipmentQtin;
+    private $sumOfLinePrice=0;
+    
+    public function getSumOfLinePrice(){
+        return $this->sumOfLinePrice;
+    }
+    
+    /**
+    * @param decimal
+    */
+    public function addSumOfLinePrice($sumOfLinePrice) {
+        $this->sumOfLinePrice = $this->sumOfLinePrice + $sumOfLinePrice;
+    }
+    
+    /**
+    * @param decimal
+    */
+    public function setSumOfLinePrice($sumOfLinePrice) {
+        $this->sumOfLinePrice = $sumOfLinePrice;
+    }
     
     public function getOrderLines(){
         return $this->orderLines;
     }
     
+    /**
+    * @param RevenueShipmentLine
+    */
+    public function addShipmentLine($shipmentLine) {
+        $this->shipmentLines[] = $shipmentLine;
+    }
+    
+    /**
+    * @param array RevenueOrderLine
+    */
+   public function setShipmentLines($shipmentLines) {
+      $this->shipmentLines = $shipmentLines;
+   }
+
+   /**
+    * @return string
+    */
+   public function getShipmentLines() {
+      return $this->shipmentLines;
+   }
+
+
     /**
     * @param RevenueOrderLine
     */
