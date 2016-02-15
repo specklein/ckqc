@@ -5,6 +5,7 @@ namespace SPE\CKlein\Mappers;
 use SPE\CKlein\Reports\RevenueCSV;
 use SPE\CKlein\Models\RevenueOrder;
 use SPE\CKlein\Models\RevenueOrderLine;
+use SPE\CKlein\Models\RevenueShipmentLine;
 use SPE\CKlein\Models\RevenueReport;
 use SPE\Core\QCLogger;
 use SPE\Core\QCConfig;
@@ -48,11 +49,11 @@ class RevenueCSV2Model {
         $revenueOrders[$csvRecord[1]][] = $revenueOrder;
       }
       //echo print_r($revenueOrders[$csvRecord[1]],true);
-      if ($csvRecord[4] == $shipmentQtin){
-        $revenueShipmentLine = new RevenueShipmentLine($csvRecord[4],$csvRecord[5],$csvRecord[6]);
+      if ($csvRecord[5] == $shipmentQtin){
+        $revenueShipmentLine = new RevenueShipmentLine($csvRecord[5],$csvRecord[6],$csvRecord[7]);
         $revenueOrders[$csvRecord[1]][0]->addShipmentLine($revenueShipmentLine);
       }else{
-        $revenueOrderLine = new RevenueOrderLine($csvRecord[4],$csvRecord[5],$csvRecord[6]);
+        $revenueOrderLine = new RevenueOrderLine($csvRecord[5],$csvRecord[6],$csvRecord[7]);
         $revenueOrders[$csvRecord[1]][0]->addOrderLine($revenueOrderLine);
       }
       //adding price 

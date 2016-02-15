@@ -5,6 +5,8 @@ namespace SPE\Core;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use SPE\Core\QCConfig;
+use SPE\Core\PrintRLineFormatter;
+use Monolog\Formatter\JsonFormatter;
 
 
 class QCLogger {
@@ -28,8 +30,11 @@ class QCLogger {
     if (self::$qcLogger) {
      return self::$qcLogger;
     } else {
-    self::$qcLogger = new Logger(QCConfig::getInstance()->get('Logs')[self::$loggerNamespace]);
-    self::$qcLogger->pushHandler(new StreamHandler($logFile, $logLevel));
+      self::$qcLogger = new Logger(QCConfig::getInstance()->get('Logs')[self::$loggerNamespace]);
+      $handler = new StreamHandler($logFile, $logLevel);
+      $handler->setFormatter(new PrintRLineFormatter());
+      //$handler->setFormatter(new JsonFormatter());
+      self::$qcLogger->pushHandler($handler);
     }
     return self::$qcLogger;
   }

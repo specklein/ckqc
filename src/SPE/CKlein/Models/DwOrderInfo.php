@@ -26,14 +26,14 @@ class DwOrderInfo {
     * @param Order_Models_OrderLine
     */
     public function addOrderLine($orderLine) {
-        $this->orderLines[] = $orderLine;
+        $this->orderLines[ltrim($orderLine->getProductId(),'0')][] = $orderLine;
     }
     
     /**
     * @param array Order_Models_OrderLine
     */
    public function setOrderLines($orderLines) {
-      $this->orderLines = $orderLines;
+      $this->orderLines[ltrim($orderLine->getProductId(),'0')] = $orderLines;
    }
 
    /**

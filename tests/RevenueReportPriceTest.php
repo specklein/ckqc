@@ -15,23 +15,12 @@ class RevenueReportPriceTest extends BaseTestCase {
   private static $revenueOrdersModel;
   
 
-/*
-  public function __construct(){
-    $this->logger = QCLogger::getInstance();
-    parent::__construct();
-  }
-*/
-
   /**
-  * @beforeClass
+  * 
   */
   public static function setUpSharedFixtures() {
-    self::$logger = QCLogger::getInstance();
-    self::$revenueOrdersModel = Registry::getInstance()->get('revReportModel');
-  }
-
-
-  public static function getOrders(){
+   // self::$logger = QCLogger::getInstance();
+   // self::$revenueOrdersModel = Registry::getInstance()->get('revReportModel');
 
     if (!isset(self::$logger)){
      self::$logger = QCLogger::getInstance();
@@ -47,12 +36,14 @@ class RevenueReportPriceTest extends BaseTestCase {
     self::$logger->debug("Revenue orders".PHP_EOL.print_r(self::$revenueOrdersModel->getOrders()));
     self::$logger->info("END ". __METHOD__);
 
-    return $revenueOrders = self::$revenueOrdersModel->getOrders();
+  }
 
-    //foreach($revenueOrders as $revenueOrder){
-//
-//	$this->checkOrder($revenueOrder);
-    //}
+
+  public static function getOrders(){
+
+    self::setUpSharedFixtures();
+
+    return $revenueOrders = self::$revenueOrdersModel->getOrders();
 
   }
 
@@ -65,19 +56,32 @@ class RevenueReportPriceTest extends BaseTestCase {
     $this->logger->info("BEGIN ". __METHOD__);
 
     $orderId = $revenueOrder->getOrderId();
-    $this->logger->debug("Testing Order #".$orderId);
-    $this->logger->debug("Sum of all prices for this order # - present in the report = ".$revenueOrder->getSumOfLinePrice());
-    $this->logger->debug("Checking against the value in db");
+    $this->logger->info("Testing Order #".$orderId);
+    $this->logger->info("Sum of all prices for this order # - present in the report = ".$revenueOrder->getSumOfLinePrice());
+    $this->logger->info("Checking against the value in db");
 
     $dwOrderDAO = new DwOrderDAO();
-    $orderInfo = $dwOrderDAO->getOrderInfo($orderId);
-    $this->assertEquals(false,empty($orderInfo),"Order, ".$orderId.", is not found in db");
-    $this->assertEquals($revenueOrder->getSumOfLinePrice(), $orderInfo->getOrderGrossPrice(),"Sum of prices for order ".$orderId." in Report is = ".$revenueOrder->getSumOfLinePrice(). ". It is not matching with the gross price value ".$orderInfo->getOrderGrossPrice() ." found in db ");
-
+    $dwOrderInfo = $dwOrderDAO->getOrderInfo($orderId);
+    $this->assertEquals(false,empty($dwOrderInfo),"Order, ".$orderId.", is not found in db");
+//    $this->assertEquals($revenueOrder->getSumOfLinePrice(), $dwOrderInfo->getOrderGrossPrice(),"Sum of prices for order ".$orderId." in report is = ".$revenueOrder->getSumOfLinePrice(). ". It is not matching with the gross price value ".$dwOrderInfo->getOrderGrossPrice() ." found in db ");
+    $revenueOrderLines = $revenueOrder->getOrderLines();
+    foreach( $revenueOrderLines as $revenueOrderLine){
+      $this->logger->info("Checking for orderLine : productId : ".$revenueOrderLine->getGtin());
+      $revenueGtin=ltrim($revenueOrderLine->getGtin(),'0');
+      $revenueQty=$revenueOrderLine->getQty();
+      $revenuePrice=$revenueOrderLine->getPrice();
+      $dwOrderLines=$dwOrderInfo->getOrderLines();
+      $this->logger->debug("dw-order-lines from db for order-id ".$orderId. " ".print_r($dwOrderLines,true));
+      $this->assertNotEmpty($dwOrderLines[$revenueGtin],"Order Line having GTIN  - ".$revenueGtin." is not found in the db");
+      $adjPriceFromDb = $dwOrderLines[$revenueGtin][0]->getAdjGrossPrice();
+      $this->assertEquals($revenuePrice, $adjPriceFromDb, "Price in revenue file for GTIN ".$revenueGtin." is not same as in db (".$adjPriceFromDb.")");
+    }
     
     $this->logger->info("END ". __METHOD__);
 
 
   }
+
+
 
 }
