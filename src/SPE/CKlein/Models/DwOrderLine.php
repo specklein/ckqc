@@ -51,19 +51,20 @@ class DwOrderLine {
   } 
 
   public function getAdjNetPrice(){
-    return $this->netPrice-$this->promoNetPrice;
+    //note promoNetPrice is in negative - should not substract
+    return $this->netPrice+$this->promoNetPrice;
   }
 
   public function getAdjGrossPrice(){
-    return $this->grossPrice-$this->promoGrossPrice;
+    return $this->grossPrice+$this->promoGrossPrice;
   }
 
   public function getAdjTax(){
-    return $this->tax-$this->promoTax;
+    return $this->tax+$this->promoTax;
   }
 
   public function getAdjBasePrice(){
-    return $this->basePrice-$this->promoBasePrice;
+    return $this->basePrice+$this->promoBasePrice;
   }
 
   public function setPromoNetPrice($promoNetPrice){

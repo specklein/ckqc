@@ -62,6 +62,12 @@ class RevenueReportPriceTest extends BaseTestCase {
 
     $dwOrderDAO = new DwOrderDAO();
     $dwOrderInfo = $dwOrderDAO->getOrderInfo($orderId);
+    $dwOrderLineCount = $dwOrderInfo->getOrderLineCount();
+    $dwAdjGrossPrice = $dwOrderInfo->getAdjGrossPrice();
+
+    $this->logger->debug("dwOrderLineCount = ".$dwOrderLineCount);
+    $this->logger->debug("dwAdjGrossPrice = ".$dwAdjGrossPrice);
+
     $this->assertEquals(false,empty($dwOrderInfo),"Order, ".$orderId.", is not found in db");
 //    $this->assertEquals($revenueOrder->getSumOfLinePrice(), $dwOrderInfo->getOrderGrossPrice(),"Sum of prices for order ".$orderId." in report is = ".$revenueOrder->getSumOfLinePrice(). ". It is not matching with the gross price value ".$dwOrderInfo->getOrderGrossPrice() ." found in db ");
     $revenueOrderLines = $revenueOrder->getOrderLines();

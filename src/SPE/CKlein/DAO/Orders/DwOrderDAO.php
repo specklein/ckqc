@@ -19,7 +19,7 @@ class DwOrderDAO extends DwDbAbstract {
 
     $this->logger->info(__METHOD__."BEGIN");
 
-    $orderHeaderQuery = "select * from dem_order_header doh inner join dem_price_adjustments dpa on (dpa.resp_table_record_id = doh.order_header_id and dpa.table_name = 'dem_order_header') where doh.original_order_no = '".$orderId."'";
+    $orderHeaderQuery = "select doh.*, dpa.net_price as promo_net_price, dpa.tax as promo_tax, dpa.gross_price as promo_gross_price, dpa.base_price as promo_base_price from dem_order_header doh left join dem_price_adjustments dpa on (dpa.resp_table_record_id = doh.order_header_id and dpa.table_name = 'dem_order_header') where doh.original_order_no = '".$orderId."'";
     $this->logger->debug("Get order-headers query : ".$orderHeaderQuery);
     $data = $this->getDbHandle()->query($orderHeaderQuery)->fetchAll();
     $this->logger->debug("Result :   ".print_r($data,true));
@@ -31,6 +31,7 @@ class DwOrderDAO extends DwDbAbstract {
     $dwOrder = new DwOrderInfo();
     
     $dwOrder->setOrderGrossPrice($data[0]["order_gross_price"]);
+    $dwOrder->setOrderPromoGrossPrice($data[0]["promo_gross_price"]);
 
     $orderLineQuery = "select dpil.*, dpa.net_price as promo_net_price, dpa.tax as promo_tax, dpa.gross_price as promo_gross_price, dpa.base_price as promo_base_price, dpa.promotion_id from dem_product_item_line dpil inner join dem_order_header doh on (doh.order_header_id = dpil.order_header_id) left join dem_price_adjustments dpa on (dpil.product_item_line_id = dpa.resp_table_record_id and dpa.table_name = 'dem_product_item_line') where doh.original_order_no ='".$orderId."'";
     

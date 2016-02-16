@@ -9,6 +9,22 @@ class DwOrderInfo {
     private $orderLineCount;
     private $orderDate;
     private $orderGrossPrice;
+    private $orderPromoGrossPrice=0;
+    
+    public function getAdjGrossPrice(){
+      //note promoGrossPrice is in negative - should not substract
+      return $this->orderGrossPrice+$this->orderPromoGrossPrice;
+    }
+
+    public function getOrderPromoGrossPrice(){
+        return $this->orderPromoGrossPrice;
+    }
+    
+    public function setOrderPromoGrossPrice($orderPromoGrossPrice){
+      if (!empty($orderPromoGrossPrice)) {
+        $this->orderPromoGrossPrice=$orderPromoGrossPrice;
+      }
+    }
     
     public function getOrderGrossPrice(){
         return $this->orderGrossPrice;
@@ -26,7 +42,8 @@ class DwOrderInfo {
     * @param Order_Models_OrderLine
     */
     public function addOrderLine($orderLine) {
-        $this->orderLines[ltrim($orderLine->getProductId(),'0')][] = $orderLine;
+      $this->orderLines[ltrim($orderLine->getProductId(),'0')][] = $orderLine;
+      $this->orderLineCount ++;
     }
     
     /**
@@ -34,6 +51,7 @@ class DwOrderInfo {
     */
    public function setOrderLines($orderLines) {
       $this->orderLines[ltrim($orderLine->getProductId(),'0')] = $orderLines;
+      $this->orderLineCount = count($orderLines);
    }
 
    /**
