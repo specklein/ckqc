@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e0f48ec229d4cccbc0f596f69978f210",
-    "content-hash": "41ed42bc66a6b168a9ae3b8a1edc17e6",
+    "hash": "535471573d2ea49cad9b7a8274962787",
+    "content-hash": "68132ab833580df6fa4b6141dc2cfae3",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -89,16 +89,16 @@
         },
         {
             "name": "catfan/medoo",
-            "version": "v1.0",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/catfan/Medoo.git",
-                "reference": "634bcef389e4eaa40d10e6d66a9eecc0f7638cc7"
+                "reference": "342e2d6a3bcf4adcac58e67593d63547139ab1ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/catfan/Medoo/zipball/634bcef389e4eaa40d10e6d66a9eecc0f7638cc7",
-                "reference": "634bcef389e4eaa40d10e6d66a9eecc0f7638cc7",
+                "url": "https://api.github.com/repos/catfan/Medoo/zipball/342e2d6a3bcf4adcac58e67593d63547139ab1ac",
+                "reference": "342e2d6a3bcf4adcac58e67593d63547139ab1ac",
                 "shasum": ""
             },
             "require": {
@@ -140,7 +140,7 @@
                 "sql",
                 "sqlite"
             ],
-            "time": "2015-10-05 07:26:17"
+            "time": "2016-02-14 16:03:42"
         },
         {
             "name": "doctrine/instantiator",
@@ -195,6 +195,61 @@
                 "instantiate"
             ],
             "time": "2015-06-14 21:17:01"
+        },
+        {
+            "name": "florianwolters/component-core-stringutils",
+            "version": "v0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FlorianWolters/PHP-Component-Core-StringUtils.git",
+                "reference": "cbac46e5956f6c217d0085923861d99bb3d8338d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FlorianWolters/PHP-Component-Core-StringUtils/zipball/cbac46e5956f6c217d0085923861d99bb3d8338d",
+                "reference": "cbac46e5956f6c217d0085923861d99bb3d8338d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "pdepend/pdepend": "2.0.*@dev",
+                "phpdocumentor/phpdocumentor": "2.*",
+                "phpmd/phpmd": "2.0.*@dev",
+                "phpunit/phpunit": "4.1.*",
+                "satooshi/php-coveralls": "dev-master",
+                "sebastian/phpcpd": "2.0.*",
+                "sebastian/phpdcd": "1.0.*",
+                "squizlabs/php_codesniffer": "2.0.*@dev"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FlorianWolters\\": "src/php/FlorianWolters"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Florian Wolters",
+                    "email": "wolters.fl@gmail.com",
+                    "homepage": "http://blog.florianwolters.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Offers operations on the data type string as a PHP component.",
+            "homepage": "http://github.com/FlorianWolters/PHP-Component-Core-StringUtils",
+            "keywords": [
+                "helper",
+                "language",
+                "string",
+                "wrapper"
+            ],
+            "time": "2014-05-03 16:27:16"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -706,22 +761,24 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "v1.5.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "4745ded9307786b730d7a60df5cb5a6c43cf95f7"
+                "reference": "3c91bdf81797d725b14cb62906f9a4ce44235972"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/4745ded9307786b730d7a60df5cb5a6c43cf95f7",
-                "reference": "4745ded9307786b730d7a60df5cb5a6c43cf95f7",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/3c91bdf81797d725b14cb62906f9a4ce44235972",
+                "reference": "3c91bdf81797d725b14cb62906f9a4ce44235972",
                 "shasum": ""
             },
             "require": {
                 "doctrine/instantiator": "^1.0.2",
+                "php": "^5.3|^7.0",
                 "phpdocumentor/reflection-docblock": "~2.0",
-                "sebastian/comparator": "~1.1"
+                "sebastian/comparator": "~1.1",
+                "sebastian/recursion-context": "~1.0"
             },
             "require-dev": {
                 "phpspec/phpspec": "~2.0"
@@ -729,7 +786,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4.x-dev"
+                    "dev-master": "1.5.x-dev"
                 }
             },
             "autoload": {
@@ -762,7 +819,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2015-08-13 10:07:40"
+            "time": "2016-02-15 07:46:21"
         },
         {
             "name": "phpunit/php-code-coverage",

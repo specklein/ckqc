@@ -15,6 +15,7 @@
         "aws/aws-sdk-php": "^3.14",
         "monolog/monolog": "^1.17",
         "propel/propel": "~2.0@dev",
+        "florianwolters/component-core-stringutils": "0.4.*",
         "catfan/Medoo": "^1.0"
     }
 }

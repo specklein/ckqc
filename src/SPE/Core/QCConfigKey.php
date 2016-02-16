@@ -8,6 +8,9 @@ class QCConfigKey {
   const _REVENUE_DATEFORMAT_CONFIG_KEY='cklein.revenue.reports.dateformat';
   const _REVENUE_REPORT_CUTOFF_HOUR_CONFIG_KEY='cklein.revenue.reports.cutoff.hour';
   const _REVENUE_REPORT_SHIPMENT_GTIN_CONFIG_KEY='cklein.shipment.gtin';
+  const _REVENUE_REPORT_FOLDER = 'cklein.revenue.reports.folder';
+  const _REVENUE_REPORT_FILENAME_PREFIX = 'cklein.revenue.reports.filename.prefix';
+  const _REVENUE_REPORT_FILENAME_EXT = 'cklein.revenue.reports.filename.ext';
 
   //ordersdb
   const _ORDERS_DB_TYPE_CONFIG_KEY='cklein.orders.db.type';
