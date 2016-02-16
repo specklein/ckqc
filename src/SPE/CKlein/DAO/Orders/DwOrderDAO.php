@@ -8,6 +8,7 @@ use SPE\CKlein\DAO\Orders\DwDbAbstract;
 use SPE\CKlein\Models\DwOrderInfo;
 use SPE\CKlein\Models\DwOrderLine;
 use SPE\CKlein\Mappers\DbResult2DwOrderLine;
+use SPE\CKlein\Mappers\DbResult2DwShippingLine;
 
 class DwOrderDAO extends DwDbAbstract {
 
@@ -49,6 +50,26 @@ class DwOrderDAO extends DwDbAbstract {
       $dwOrderLine = DbResult2DwOrderLine::transform($orderLine);
       $dwOrder->addOrderLine($dwOrderLine);    
     }
+
+
+    $shippingLineQuery = "SELECT dsil.*, dpa.net_price AS promo_net_price, dpa.tax AS promo_tax, dpa.gross_price AS promo_gross_price, dpa.base_price AS promo_base_price, dpa.promotion_id FROM dem_order_header doh LEFT JOIN dem_shipping_item_line dsil ON (doh.order_header_id = dsil.order_header_id) INNER JOIN dem_shipment ds on (ds.order_header_id = doh.order_header_id) LEFT JOIN dem_price_adjustments dpa ON (dsil.shipping_item_line_id = dpa.resp_table_record_id AND dpa.table_name = 'dem_shipping_item_line') where doh.original_order_no ='".$orderId."'";
+
+    $this->logger->debug("Get shipping-line query : ".$shippingLineQuery);
+    $shippingLines = $this->getDbHandle()->query($shippingLineQuery)->fetchAll();
+    $this->logger->debug("Result :   ".print_r($shippingLines,true));
+
+    if (empty($shippingLines) || count($shippingLines) == 0){
+     $this->logger->debug("No shipping lines found for the given orderId :",$orderId);
+     return null;
+    }
+
+
+    foreach ($shippingLines  as $shippingLine){
+      $this->logger->debug(" shippingLine - ".print_r($shippingLine,true));
+      $dwShippingLine = DbResult2DwShippingLine::transform($shippingLine);
+      $dwOrder->addShippingLine($dwShippingLine);
+    }
+
 
     $this->logger->debug("Order gross price in dw =  :   ".$data[0]["order_gross_price"]);
     

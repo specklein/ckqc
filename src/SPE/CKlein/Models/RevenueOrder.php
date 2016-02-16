@@ -23,7 +23,7 @@ class RevenueOrder {
     /**
     * @param decimal
     */
-    public function addSumOfLinePrice($sumOfLinePrice) {
+    private function addSumOfLinePrice($sumOfLinePrice) {
         $this->sumOfLinePrice = $this->sumOfLinePrice + $sumOfLinePrice;
     }
     
@@ -42,7 +42,8 @@ class RevenueOrder {
     * @param RevenueShipmentLine
     */
     public function addShipmentLine($shipmentLine) {
-        $this->shipmentLines[] = $shipmentLine;
+      $this->shipmentLines[] = $shipmentLine;
+      $this->sumOfLinePrice += $shipmentLine->getPrice();
     }
     
     /**
@@ -64,7 +65,8 @@ class RevenueOrder {
     * @param RevenueOrderLine
     */
     public function addOrderLine($orderLine) {
-        $this->orderLines[] = $orderLine;
+      $this->orderLines[] = $orderLine;
+      $this->sumOfLinePrice += $orderLine->getPrice();
     }
     
     /**

@@ -58,7 +58,7 @@ class RevenueCSV2Model {
         $revenueOrders[$csvRecord[1]][0]->incrementOrderLineCount();
       }
       //adding price 
-      $revenueOrders[$csvRecord[1]][0]->addSumOfLinePrice($csvRecord[6]);
+      //$revenueOrders[$csvRecord[1]][0]->addSumOfLinePrice($csvRecord[6]);
       
 
     } 

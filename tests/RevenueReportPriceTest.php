@@ -65,6 +65,7 @@ class RevenueReportPriceTest extends BaseTestCase {
     $dwOrderLineCount = $dwOrderInfo->getOrderLineCount();
     $dwPromoGrossPrice = $dwOrderInfo->getOrderPromoGrossPrice();
     $dwOrderLines=$dwOrderInfo->getOrderLines();
+    $dwShippingLines=$dwOrderInfo->getShippingLines();
 
     $this->assertGreaterThan(0,$dwOrderLineCount,"Count of orderLines is not greater than 0 for orderId:".$orderId);
 
@@ -72,7 +73,7 @@ class RevenueReportPriceTest extends BaseTestCase {
     $this->logger->debug("dwPromoGrossPrice = ".$dwPromoGrossPrice);
 
     $this->assertEquals(false,empty($dwOrderInfo),"Order, ".$orderId.", is not found in db");
-//    $this->assertEquals($revenueOrder->getSumOfLinePrice(), $dwOrderInfo->getOrderGrossPrice(),"Sum of prices for order ".$orderId." in report is = ".$revenueOrder->getSumOfLinePrice(). ". It is not matching with the gross price value ".$dwOrderInfo->getOrderGrossPrice() ." found in db ");
+    //$this->assertEquals($revenueOrder->getSumOfLinePrice(), $dwOrderInfo->getOrderGrossPrice(),"Sum of prices for order ".$orderId." in report is = ".$revenueOrder->getSumOfLinePrice(). ". It is not matching with the gross price value ".$dwOrderInfo->getOrderGrossPrice() ." found in db ");
     $revenueOrderLines = $revenueOrder->getOrderLines();
     foreach( $revenueOrderLines as $revenueOrderLine){
       $this->logger->info("Checking for orderLine : productId : ".$revenueOrderLine->getGtin());
@@ -88,6 +89,28 @@ class RevenueReportPriceTest extends BaseTestCase {
       //each line adjusted by the line-promotion + order-promotion/total-order-line
       $adjPriceFromDb = $dwOrderLines[$revenueGtin][0]->getAdjGrossPrice()+($dwPromoGrossPrice/$dwOrderLineCount);
       $this->assertEquals($revenuePrice, $adjPriceFromDb, "Price in revenue file for GTIN ".$revenueGtin." is not same as in db (".$adjPriceFromDb.")");
+    }
+
+
+    //test shipping line values
+    $revenueShippingLines = $revenueOrder->getShipmentLines();
+
+    $this->logger->debug("revenueShippingLines ".print_r($revenueShippingLines , true));
+    foreach ($revenueShippingLines as $revenueShippingLine){
+      $this->logger->info("Checking shipping line : product-Id :".$revenueShippingLine->getGtin());
+      $shippingGtin = ltrim ($revenueShippingLine->getGtin(),'0');
+      $shippingPrice = $revenueShippingLine->getPrice();
+      $this->logger->debug("dw-order-lines from db for order-id ".$orderId. " ".print_r($dwShippingLines,true));
+      if (! isset($dwShippingLines[$shippingGtin])){
+        $this->logger->error("Revenue record having shipping Gtin = ".$shippingGtin." is not found as a order line for order ".$orderId);
+        $this->assertEquals(true,false,"Revenue record having Gtin = ".$shippingGtin." is not found as a order line for order ".$orderId);
+      }
+      $this->assertNotEmpty($dwShippingLines[$shippingGtin],"Shipping Line having GTIN  - ".$shippingGtin." is not found in the db");
+      $adjShippingPriceFromDb = $dwShippingLines[$shippingGtin][0]->getAdjGrossPrice()+$dwPromoGrossPrice;
+      $this->assertEquals($shippingPrice, $adjShippingPriceFromDb, "Shipping gross price (".$shippingPrice.") in revenue file for GTIN ".$shippingGtin." is not same as in db (".$adjShippingPriceFromDb.")");
+
+
+
     }
     
     $this->logger->info("END ". __METHOD__);
