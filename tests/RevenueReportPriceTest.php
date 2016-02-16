@@ -72,6 +72,10 @@ class RevenueReportPriceTest extends BaseTestCase {
       $revenuePrice=$revenueOrderLine->getPrice();
       $dwOrderLines=$dwOrderInfo->getOrderLines();
       $this->logger->debug("dw-order-lines from db for order-id ".$orderId. " ".print_r($dwOrderLines,true));
+      if (! isset($dwOrderLines[$revenueGtin])){
+        $this->logger->error("Revenue record having Gtin = ".$revenueGtin." is not found as a order line for order ".$orderId);
+	$this->assertEquals(true,false,"Revenue record having Gtin = ".$revenueGtin." is not found as a order line for order ".$orderId);
+      }
       $this->assertNotEmpty($dwOrderLines[$revenueGtin],"Order Line having GTIN  - ".$revenueGtin." is not found in the db");
       $adjPriceFromDb = $dwOrderLines[$revenueGtin][0]->getAdjGrossPrice();
       $this->assertEquals($revenuePrice, $adjPriceFromDb, "Price in revenue file for GTIN ".$revenueGtin." is not same as in db (".$adjPriceFromDb.")");
