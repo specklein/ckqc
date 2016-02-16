@@ -63,10 +63,13 @@ class RevenueReportPriceTest extends BaseTestCase {
     $dwOrderDAO = new DwOrderDAO();
     $dwOrderInfo = $dwOrderDAO->getOrderInfo($orderId);
     $dwOrderLineCount = $dwOrderInfo->getOrderLineCount();
-    $dwAdjGrossPrice = $dwOrderInfo->getAdjGrossPrice();
+    $dwPromoGrossPrice = $dwOrderInfo->getOrderPromoGrossPrice();
+    $dwOrderLines=$dwOrderInfo->getOrderLines();
+
+    $this->assertGreaterThan(0,$dwOrderLineCount,"Count of orderLines is not greater than 0 for orderId:".$orderId);
 
     $this->logger->debug("dwOrderLineCount = ".$dwOrderLineCount);
-    $this->logger->debug("dwAdjGrossPrice = ".$dwAdjGrossPrice);
+    $this->logger->debug("dwPromoGrossPrice = ".$dwPromoGrossPrice);
 
     $this->assertEquals(false,empty($dwOrderInfo),"Order, ".$orderId.", is not found in db");
 //    $this->assertEquals($revenueOrder->getSumOfLinePrice(), $dwOrderInfo->getOrderGrossPrice(),"Sum of prices for order ".$orderId." in report is = ".$revenueOrder->getSumOfLinePrice(). ". It is not matching with the gross price value ".$dwOrderInfo->getOrderGrossPrice() ." found in db ");
@@ -76,14 +79,14 @@ class RevenueReportPriceTest extends BaseTestCase {
       $revenueGtin=ltrim($revenueOrderLine->getGtin(),'0');
       $revenueQty=$revenueOrderLine->getQty();
       $revenuePrice=$revenueOrderLine->getPrice();
-      $dwOrderLines=$dwOrderInfo->getOrderLines();
       $this->logger->debug("dw-order-lines from db for order-id ".$orderId. " ".print_r($dwOrderLines,true));
       if (! isset($dwOrderLines[$revenueGtin])){
         $this->logger->error("Revenue record having Gtin = ".$revenueGtin." is not found as a order line for order ".$orderId);
 	$this->assertEquals(true,false,"Revenue record having Gtin = ".$revenueGtin." is not found as a order line for order ".$orderId);
       }
       $this->assertNotEmpty($dwOrderLines[$revenueGtin],"Order Line having GTIN  - ".$revenueGtin." is not found in the db");
-      $adjPriceFromDb = $dwOrderLines[$revenueGtin][0]->getAdjGrossPrice();
+      //each line adjusted by the line-promotion + order-promotion/total-order-line
+      $adjPriceFromDb = $dwOrderLines[$revenueGtin][0]->getAdjGrossPrice()+($dwPromoGrossPrice/$dwOrderLineCount);
       $this->assertEquals($revenuePrice, $adjPriceFromDb, "Price in revenue file for GTIN ".$revenueGtin." is not same as in db (".$adjPriceFromDb.")");
     }
     
