@@ -40,7 +40,7 @@ class RevenueCSV2Model {
       //Check if order model object is alredy created for the current record
       //if so reuse that object
       if (!isset($revenueOrders[$csvRecord[1]])) {
-        $orderCount++;
+        $orderCount=1;
         $revenueOrder = new RevenueOrder();
         $revenueOrder->setOrderId($csvRecord[1]);
 	$revenueOrder->setOrderDate($csvRecord[0]);
@@ -55,6 +55,7 @@ class RevenueCSV2Model {
       }else{
         $revenueOrderLine = new RevenueOrderLine($csvRecord[5],$csvRecord[6],$csvRecord[7]);
         $revenueOrders[$csvRecord[1]][0]->addOrderLine($revenueOrderLine);
+        $revenueOrders[$csvRecord[1]][0]->incrementOrderLineCount();
       }
       //adding price 
       $revenueOrders[$csvRecord[1]][0]->addSumOfLinePrice($csvRecord[6]);

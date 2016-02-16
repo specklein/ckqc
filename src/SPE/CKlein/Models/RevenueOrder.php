@@ -12,7 +12,7 @@ class RevenueOrder {
     private $orderDate;
     private $orderLines = array();
     private $shipmentLines = array();
-    private $orderLineCount;
+    private $orderLineCount=0;
     private $shipmentQtin;
     private $sumOfLinePrice=0;
     
@@ -86,6 +86,10 @@ class RevenueOrder {
     */
    public function setOrderLineCount($orderLineCount) {
       $this->orderLineCount = $orderLineCount;
+   }
+
+   public function incrementOrderLineCount(){
+     $this->orderLineCount++;
    }
    
    /**
