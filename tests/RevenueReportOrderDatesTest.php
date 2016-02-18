@@ -26,7 +26,6 @@ class RevenueReportOrderDatesTest extends PHPUnit_Framework_TestCase {
     }
 
     $previousOrderRevenueReportDate;
-    //testing the no. of fields in each line
     $lineNum=0;
     foreach (self::$csvRecords as $csvRecord){
       $lineNum++;

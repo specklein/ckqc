@@ -7,7 +7,6 @@ use SPE\CKlein\Reports\RevenueCSV;
 use SPE\CKlein\Utils\RevenueReportUtils;
 use SPE\CKlein\Mappers\RevenueCSV2Model;
 use SPE\Core\Registry;
-use FlorianWolters\Component\Core\StringUtils;
 
 define('APPLICATION_PATH', realpath(dirname(__FILE__) ));
 

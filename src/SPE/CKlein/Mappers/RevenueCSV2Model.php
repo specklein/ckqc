@@ -44,7 +44,6 @@ class RevenueCSV2Model {
         $revenueOrder = new RevenueOrder();
         $revenueOrder->setOrderId($csvRecord[1]);
 	$revenueOrder->setOrderDate($csvRecord[0]);
-      //  $revenueOrder->addOrderLine($revenueOrderLine);
         $revenueOrders[$csvRecord[1]] = array();
         $revenueOrders[$csvRecord[1]][] = $revenueOrder;
       }

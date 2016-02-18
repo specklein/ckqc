@@ -10,6 +10,7 @@ class DbResult2DwOrderLine {
   public static function transform($dbResultSetRow){
     $dwOrderLine  = new DwOrderLine();
     $dwOrderLine->setProductId($dbResultSetRow['product_id']);
+    $dwOrderLine->setQty($dbResultSetRow['quantity']);
     $dwOrderLine->setNetPrice($dbResultSetRow['net_price']);
     $dwOrderLine->setTax($dbResultSetRow['tax']);
     $dwOrderLine->setGrossPrice($dbResultSetRow['gross_price']);

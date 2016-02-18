@@ -33,6 +33,7 @@ class DwOrderDAO extends DwDbAbstract {
     
     $dwOrder->setOrderGrossPrice($data[0]["order_gross_price"]);
     $dwOrder->setOrderPromoGrossPrice($data[0]["promo_gross_price"]);
+    $dwOrder->setMerchantGrossPrice($data[0]["merc_gross_price"]);
 
     $orderLineQuery = "select dpil.*, dpa.net_price as promo_net_price, dpa.tax as promo_tax, dpa.gross_price as promo_gross_price, dpa.base_price as promo_base_price, dpa.promotion_id from dem_product_item_line dpil inner join dem_order_header doh on (doh.order_header_id = dpil.order_header_id) left join dem_price_adjustments dpa on (dpil.product_item_line_id = dpa.resp_table_record_id and dpa.table_name = 'dem_product_item_line') where doh.original_order_no ='".$orderId."'";
     

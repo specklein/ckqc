@@ -8,7 +8,6 @@ use SPE\Core\QCLogger;
 use SPE\CKlein\Models\RevenueReport;
 use SPE\CKlein\DAO\Orders\DwOrderDAO;
 
-//class RevenueReportPriceTest extends PHPUnit_Framework_TestCase {
 class RevenueReportPriceTest extends BaseTestCase {
 
   private static $logger;
@@ -64,22 +63,25 @@ class RevenueReportPriceTest extends BaseTestCase {
     $dwOrderInfo = $dwOrderDAO->getOrderInfo($orderId);
     $dwOrderLineCount = $dwOrderInfo->getOrderLineCount();
     $dwPromoGrossPrice = $dwOrderInfo->getOrderPromoGrossPrice();
+    $dwSumOfAllOrderLineQty = $dwOrderInfo->getSumOfAllOrderLineQty();
+    $dwMerchantGrossPrice = $dwOrderInfo->getMerchantGrossPrice();
     $dwOrderLines=$dwOrderInfo->getOrderLines();
     $dwShippingLines=$dwOrderInfo->getShippingLines();
 
     $this->assertGreaterThan(0,$dwOrderLineCount,"Count of orderLines is not greater than 0 for orderId:".$orderId);
 
     $this->logger->debug("dwOrderLineCount = ".$dwOrderLineCount);
+    $this->logger->debug("dwMerchantGrossPrice = ".$dwMerchantGrossPrice);
     $this->logger->debug("dwPromoGrossPrice = ".$dwPromoGrossPrice);
 
     $this->assertEquals(false,empty($dwOrderInfo),"Order, ".$orderId.", is not found in db");
-    //$this->assertEquals($revenueOrder->getSumOfLinePrice(), $dwOrderInfo->getOrderGrossPrice(),"Sum of prices for order ".$orderId." in report is = ".$revenueOrder->getSumOfLinePrice(). ". It is not matching with the gross price value ".$dwOrderInfo->getOrderGrossPrice() ." found in db ");
+    $this->assertEquals($revenueOrder->getSumOfLinePrice(), $dwOrderInfo->getOrderGrossPrice(),"Sum of prices for order ".$orderId." in report is = ".$revenueOrder->getSumOfLinePrice(). ". It is not matching with the gross price value ".$dwOrderInfo->getOrderGrossPrice() ." found in db ");
     $revenueOrderLines = $revenueOrder->getOrderLines();
     foreach( $revenueOrderLines as $revenueOrderLine){
       $this->logger->info("Checking for orderLine : productId : ".$revenueOrderLine->getGtin());
       $revenueGtin=ltrim($revenueOrderLine->getGtin(),'0');
       $revenueQty=$revenueOrderLine->getQty();
-      $revenuePrice=$revenueOrderLine->getPrice();
+      $revenuePrice=$revenueOrderLine->getPrice()*$revenueQty;
       $this->logger->debug("dw-order-lines from db for order-id ".$orderId. " ".print_r($dwOrderLines,true));
       if (! isset($dwOrderLines[$revenueGtin])){
         $this->logger->error("Revenue record having Gtin = ".$revenueGtin." is not found as a order line for order ".$orderId);
@@ -87,7 +89,11 @@ class RevenueReportPriceTest extends BaseTestCase {
       }
       $this->assertNotEmpty($dwOrderLines[$revenueGtin],"Order Line having GTIN  - ".$revenueGtin." is not found in the db");
       //each line adjusted by the line-promotion + order-promotion/total-order-line
-      $adjPriceFromDb = $dwOrderLines[$revenueGtin][0]->getAdjGrossPrice()+($dwPromoGrossPrice/$dwOrderLineCount);
+      $dwOrderLineQty = $dwOrderLines[$revenueGtin][0]->getQty();
+      //$dwOrderLineGPRatio = round(($dwOrderLines[$revenueGtin][0]->getAdjGrossPrice()/$dwMerchantGrossPrice),4);
+      $dwOrderLineGPRatio = $dwOrderLines[$revenueGtin][0]->getAdjGrossPrice()/$dwMerchantGrossPrice;
+      $this->logger->debug("orderLineRatio = ".$dwOrderLineGPRatio);
+      $adjPriceFromDb = $dwOrderLines[$revenueGtin][0]->getAdjGrossPrice()+$dwOrderLineGPRatio * $dwPromoGrossPrice;
       $this->assertEquals($revenuePrice, $adjPriceFromDb, "Price in revenue file for GTIN ".$revenueGtin." is not same as in db (".$adjPriceFromDb.")");
     }
 
@@ -106,7 +112,7 @@ class RevenueReportPriceTest extends BaseTestCase {
         $this->assertEquals(true,false,"Revenue record having Gtin = ".$shippingGtin." is not found as a order line for order ".$orderId);
       }
       $this->assertNotEmpty($dwShippingLines[$shippingGtin],"Shipping Line having GTIN  - ".$shippingGtin." is not found in the db");
-      $adjShippingPriceFromDb = $dwShippingLines[$shippingGtin][0]->getAdjGrossPrice()+$dwPromoGrossPrice;
+      $adjShippingPriceFromDb = $dwShippingLines[$shippingGtin][0]->getAdjGrossPrice();//+$dwPromoGrossPrice;
       $this->assertEquals($shippingPrice, $adjShippingPriceFromDb, "Shipping gross price (".$shippingPrice.") in revenue file for GTIN ".$shippingGtin." is not same as in db (".$adjShippingPriceFromDb.")");
 
 

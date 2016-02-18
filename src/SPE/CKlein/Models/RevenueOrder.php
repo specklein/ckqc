@@ -66,7 +66,7 @@ class RevenueOrder {
     */
     public function addOrderLine($orderLine) {
       $this->orderLines[] = $orderLine;
-      $this->sumOfLinePrice += $orderLine->getPrice();
+      $this->sumOfLinePrice += ($orderLine->getPrice()*$orderLine->getQty());
     }
     
     /**
