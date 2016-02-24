@@ -47,7 +47,6 @@ class RevenueCSV2Model {
         $revenueOrders[$csvRecord[1]] = array();
         $revenueOrders[$csvRecord[1]][] = $revenueOrder;
       }
-      //echo print_r($revenueOrders[$csvRecord[1]],true);
       if ($csvRecord[5] == $shipmentQtin){
         $revenueShipmentLine = new RevenueShipmentLine($csvRecord[5],$csvRecord[6],$csvRecord[7]);
         $revenueOrders[$csvRecord[1]][0]->addShipmentLine($revenueShipmentLine);

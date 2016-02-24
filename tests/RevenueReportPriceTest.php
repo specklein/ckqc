@@ -32,7 +32,7 @@ class RevenueReportPriceTest extends BaseTestCase {
         throw new Exception("Not bootstrapped properly. Missing revenueOrdersModel");
       }
     }
-    self::$logger->debug("Revenue orders".PHP_EOL.print_r(self::$revenueOrdersModel->getOrders()));
+    self::$logger->debug("Revenue orders".PHP_EOL.print_r(self::$revenueOrdersModel->getOrders(),true));
     self::$logger->info("END ". __METHOD__);
 
   }

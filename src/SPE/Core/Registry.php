@@ -47,7 +47,6 @@ class Registry {
 
   public function get( $key ) {
 
-//    echo 'objects'.print_r($this->objects,true);
     if( false === isset( $this->objects[$key] ) ) {
       $this->logger->error("Key ".$key." not found");
       throw new Exception('Invalid instance requested');
