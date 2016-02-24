@@ -14,6 +14,7 @@ class DwOrderInfo {
     private $shippingLineCount=0;
     private $sumOfAllOrderLineQty=0;
     private $merchantGrossPrice=0;
+    private $sumOfOrderLineGPPostLineAdj=0;
     
     public function getAdjGrossPrice(){
       //note promoGrossPrice is in negative - should not substract
@@ -54,6 +55,10 @@ class DwOrderInfo {
         return $this->sumOfAllOrderLineQty=$sumOfAllOrderLineQty;
     }
     
+    public function getSumOfOrderLineGPPostLineAdj(){
+        return $this->sumOfOrderLineGPPostLineAdj;
+    }
+    
     public function getSumOfAllOrderLineQty(){
         return $this->sumOfAllOrderLineQty;
     }
@@ -65,6 +70,7 @@ class DwOrderInfo {
       $this->orderLines[ltrim($orderLine->getProductId(),'0')][] = $orderLine;
       $this->orderLineCount ++;
       $this->sumOfAllOrderLineQty+= $orderLine->getQty();
+      $this->sumOfOrderLineGPPostLineAdj += $orderLine->getGrossPrice()+$orderLine->getPromoGrossPrice();
     }
     
     /**

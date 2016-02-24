@@ -16,6 +16,7 @@
         "monolog/monolog": "^1.17",
         "propel/propel": "~2.0@dev",
         "florianwolters/component-core-stringutils": "0.4.*",
-        "catfan/Medoo": "^1.0"
+        "catfan/Medoo": "^1.0",
+        "guzzlehttp/guzzle": "^6.1"
     }
 }

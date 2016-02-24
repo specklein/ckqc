@@ -20,7 +20,7 @@ class DwOrderDAO extends DwDbAbstract {
 
     $this->logger->info(__METHOD__."BEGIN");
 
-    $orderHeaderQuery = "select doh.*, dpa.net_price as promo_net_price, dpa.tax as promo_tax, dpa.gross_price as promo_gross_price, dpa.base_price as promo_base_price from dem_order_header doh left join dem_price_adjustments dpa on (dpa.resp_table_record_id = doh.order_header_id and dpa.table_name = 'dem_order_header') where doh.original_order_no = '".$orderId."'";
+    $orderHeaderQuery = "select doh.*, sum(dpa.net_price) as promo_net_price, sum(dpa.tax) as promo_tax, sum(dpa.gross_price) as promo_gross_price, sum(dpa.base_price) as promo_base_price from dem_order_header doh left join dem_price_adjustments dpa on (dpa.resp_table_record_id = doh.order_header_id and dpa.table_name = 'dem_order_header') where doh.original_order_no = '".$orderId."'";
     $this->logger->debug("Get order-headers query : ".$orderHeaderQuery);
     $data = $this->getDbHandle()->query($orderHeaderQuery)->fetchAll();
     $this->logger->debug("Result :   ".print_r($data,true));

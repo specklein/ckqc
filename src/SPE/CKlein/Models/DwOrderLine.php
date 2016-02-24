@@ -38,6 +38,10 @@ class DwOrderLine {
     return $this->promotionId;
   } 
 
+  public function getBasePrice(){
+    return $this->basePrice;
+  } 
+
   public function setBasePrice($basePrice){
     $this->basePrice=$basePrice;
   } 

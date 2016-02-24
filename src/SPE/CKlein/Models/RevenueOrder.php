@@ -15,7 +15,22 @@ class RevenueOrder {
     private $orderLineCount=0;
     private $shipmentQtin;
     private $sumOfLinePrice=0;
+    private $repeatedSkus = array();
     
+
+
+    public function getSumOfAllRecords(){
+      return $this->getSumOfLinePrice()+$this->getSumOfShipLinePrice();
+
+    }
+
+    public function getSumOfShipLinePrice(){
+       $sumOfShipLinePrice = 0;
+       foreach ($this->shipmentLines as $shipmentLine){
+         $sumOfShipLinePrice += $shipmentLine->getPrice();
+       }
+    }
+
     public function getSumOfLinePrice(){
         return $this->sumOfLinePrice;
     }
@@ -61,12 +76,34 @@ class RevenueOrder {
    }
 
 
+   private function isOrderLineAdded($newOrderLine){
+     foreach($this->orderLines as $orderLine){
+       if ($orderLine->getGtin() == $newOrderLine->getGtin()){
+        return true;
+       }
+     }
+     return false;
+   }
+
+
+  public function isLineRepeating($productId){
+    if (isset($this->repeatedSkus[$productId])){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
     /**
     * @param RevenueOrderLine
     */
     public function addOrderLine($orderLine) {
+      if ($this->isOrderLineAdded($orderLine)){
+        $this->repeatedSkus[$orderLine->getGtin()]=true;
+      }
       $this->orderLines[] = $orderLine;
       $this->sumOfLinePrice += ($orderLine->getPrice()*$orderLine->getQty());
+
     }
     
     /**
