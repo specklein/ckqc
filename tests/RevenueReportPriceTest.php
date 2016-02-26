@@ -62,6 +62,7 @@ class RevenueReportPriceTest extends BaseTestCase {
 
     $dwOrderDAO = new DwOrderDAO();
     $dwOrderInfo = $dwOrderDAO->getOrderInfo($orderId);
+    $this->assertNotNull($dwOrderInfo, "Order, with # ".$orderId.", is not found in db");
     $dwOrderLineCount = $dwOrderInfo->getOrderLineCount();
     $dwPromoGrossPrice = $dwOrderInfo->getOrderPromoGrossPrice();
     $dwSumOfAllOrderLineQty = $dwOrderInfo->getSumOfAllOrderLineQty();
