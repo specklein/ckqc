@@ -60,7 +60,7 @@ class DwOrderDAO extends DwDbAbstract {
     $this->logger->debug("Result :   ".print_r($shippingLines,true));
 
     if (empty($shippingLines) || count($shippingLines) == 0){
-     $this->logger->debug("No shipping lines found for the given orderId :",$orderId);
+     $this->logger->debug("No shipping lines found for the given orderId :".$orderId);
      return null;
     }
 
