@@ -21,5 +21,8 @@ class QCConfigKey {
   const _ORDERS_DB_CHARSET_CONFIG_KEY='cklein.orders.db.charset';
   const _ORDERS_DB_PORT_CONFIG_KEY='cklein.orders.db.port';
 
+  //credentials
+  const _CK_CREDENTIALS_CONFIG_SECTION='calvinklein';
+
 
 }

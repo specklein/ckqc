@@ -7,7 +7,7 @@
 		"classmap": ["generated-classes/"]
 		
 	},
-	"name" : "spe/ckqc",
+    "name" : "spe/ckqc",
     "require": {
         "phpunit/phpunit": "4.8",
         "hassankhan/config": "^0.9.1",
@@ -17,6 +17,8 @@
         "propel/propel": "~2.0@dev",
         "florianwolters/component-core-stringutils": "0.4.*",
         "catfan/Medoo": "^1.0",
-        "guzzlehttp/guzzle": "^6.1"
+        "guzzlehttp/guzzle": "^6.1",
+        "phpoffice/phpexcel": "1.8.1",
+        "phpmailer/phpmailer" : "5.2.14"
     }
 }

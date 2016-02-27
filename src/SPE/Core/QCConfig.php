@@ -10,6 +10,8 @@ class QCConfig {
 
   private static $APP_CONFIG_FOLDER = '/etc/config';
 
+  private static $credConfig  = null;
+
   //Making this class a singleton
   private function __construct(){ 
   }
@@ -26,6 +28,18 @@ class QCConfig {
       self::$qcConfig = new Config($APP_CONFIG_FILE);
     }
     return self::$qcConfig;
+
+  }
+
+
+  public static function getCredConfig(){
+
+    if (!self::$credConfig){
+      $qcConfig = self::getInstance();
+      $credFile = $qcConfig->get('secure')['credentials.filepath'];
+      self::$credConfig = new Config($credFile);
+    }
+    return self::$credConfig;
 
   }
 

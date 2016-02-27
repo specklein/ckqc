@@ -3,6 +3,7 @@
 namespace SPE\Core\Payment\CyberSource;
 
 use SPE\Core\Payment\CyberSource\CSConfigKey;
+use SPE\Core\QCConfigKey;
 use GuzzleHttp\Client;
 use SPE\Core\QCLogger;
 use SPE\Core\QCConfig;
@@ -24,11 +25,17 @@ class CyberSourceProxy {
     $this->logger = QCLogger::getInstance();
     $this->config = QCConfig::getInstance();
     $csConfig = $this->config->get('cybersource');
-    $this->csEndpoint = $csConfig[CSConfigKey::ONDEMAND_REQ_ENDPOINT];
-    $this->csUsername = $csConfig[CSConfigKey::ONDEMAND_REQ_USERNAME];
-    $this->csPassword = $csConfig[CSConfigKey::ONDEMAND_REQ_PASSWORD];
+
     $this->csQueryPath = $csConfig[CSConfigKey::ONDEMAND_QUERY_PATH];
     $this->csMerchantID = $csConfig[CSConfigKey::ONDEMAND_REQ_MERCHANTID];
+    $this->csEndpoint = $csConfig[CSConfigKey::ONDEMAND_REQ_ENDPOINT];
+
+    $credConfig = QCConfig::getCredConfig()->get(QCConfigKey::_CK_CREDENTIALS_CONFIG_SECTION);
+    //$this->csUsername = $csConfig[CSConfigKey::ONDEMAND_REQ_USERNAME];
+    //$this->csPassword = $credConfig[CSConfigKey::ONDEMAND_REQ_PASSWORD];
+    $this->csUsername = $credConfig[CSConfigKey::ONDEMAND_REQ_USERNAME];
+    $this->csPassword = $credConfig[CSConfigKey::ONDEMAND_REQ_PASSWORD];
+
   }
 
   public function getTransactionDetailsXml($merchantReferenceNumber,$targetDate){
