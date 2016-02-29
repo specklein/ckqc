@@ -81,7 +81,14 @@ class RevenueReport {
      return $reportDate; 
 
    }
-   
+
+   public function getOrderIds(){
+     $orderIds = array();
+     foreach($this->orders as $order){
+       $orderIds[]=$order[0]->getOrderId();
+     }
+     return $orderIds;
+   }
 
 
 }

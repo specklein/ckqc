@@ -18,6 +18,13 @@ class RevenueOrder {
     private $repeatedSkus = array();
     
 
+    public function getSumOfAllQuantities(){
+      $sum = 0;
+      foreach($this->orderLines as $orderLine){
+        $sum = $sum + $orderLine->getQty();       
+      }
+      return $sum;
+    }
 
     public function getSumOfAllRecords(){
       return $this->getSumOfLinePrice()+$this->getSumOfShipLinePrice();

@@ -5,7 +5,7 @@ require_once __DIR__ . '/etc/config/config.php';
 
 use SPE\Core\TestController;
 
-define('APPLICATION_PATH', realpath(dirname(__FILE__) ));
+define('APPLICATION_ROOT_FOLDER', realpath(dirname(__FILE__) ));
 
 global $argv, $argc;
 

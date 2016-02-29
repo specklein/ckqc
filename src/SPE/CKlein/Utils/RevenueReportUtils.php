@@ -7,6 +7,8 @@ use SPE\Core\QCConfigKey;
 use SPE\Core\QCLogger;
 use FlorianWolters\Component\Core\StringUtils;
 use DateTime;
+use SPE\CKlein\Reports\RevenueCSV;
+use SPE\CKlein\Mappers\RevenueCSV2Model;
 
 class RevenueReportUtils {
 
@@ -51,6 +53,16 @@ class RevenueReportUtils {
    $reportDate = $dateTime->format('Ymd');
    return $reportDate;
   }
+
+
+   public static function getRevenueModel($revenueReportFile){
+
+     $revenueReport = new RevenueCSV($revenueReportFile);
+     $csvRecords = $revenueReport->getCsvRecords()->setOffset(1)->fetchAll();
+     $revenueReportModel = RevenueCSV2Model::transform($csvRecords);
+     return $revenueReportModel;
+   }
+
 
 
 }

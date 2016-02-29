@@ -31,7 +31,7 @@ class PHPMailerProxy {
     $this->mailClient = new PHPMailer();
     $this->mailClient->isSMTP();
     $this->mailClient->SMTPAuth = true;
-    $this->mailClient->SMTPDebug = 5;
+    //$this->mailClient->SMTPDebug = 1;
     $this->mailClient->SMTPSecure = 'tls';
     $this->mailClient->Host = $aws['cklein.qc.aws.ses.host'];
     $this->mailClient->Port = $aws['cklein.qc.aws.ses.port'];
