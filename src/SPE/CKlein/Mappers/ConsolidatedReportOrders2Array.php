@@ -31,6 +31,11 @@ class ConsolidatedReportOrders2Array{
       $csTxnRecord = $csTxnInfo[$dbRecord[0]];
       $lineArray[]=$csTxnRecord->getRequestDate();
       $lineArray[]=$csTxnRecord->getPaymentAmount();
+      $lineArray[]=$dbRecord[6];
+      $lineArray[]=$dbRecord[7];
+      $lineArray[]=$dbRecord[8];
+      $lineArray[]=$dbRecord[9];
+
       $reportDataArray[]=$lineArray;
     }
     return $reportDataArray;
