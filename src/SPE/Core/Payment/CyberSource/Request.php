@@ -21,7 +21,8 @@ class Request {
     }
     $this->requestXmlElement = new SimpleXMLElement($paymentRequestXml);
     //$this->requestXmlElement = simplexml_load_file ("/tmp/csRequest.xml");
-    $this->requestXmlElement->registerXPathNamespace('cs',"https://ebctest.cybersource.com/ebctest/reports/dtd/tdr_1_9.dtd");
+    //$this->requestXmlElement->registerXPathNamespace('cs',"https://ebctest.cybersource.com/ebctest/reports/dtd/tdr_1_9.dtd");
+    $this->requestXmlElement->registerXPathNamespace('cs',"https://ebc.cybersource.com/ebc/reports/dtd/tdr_1_9.dtd");
     $this->logger=QCLogger::getInstance();
   }
 

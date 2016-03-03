@@ -57,9 +57,6 @@ class RevenueReportPaymentGatewayTest extends BaseTestCase {
     $this->logger->debug("Received Revenue Order :".print_r($revenueOrder,true));
 
     $orderId = $revenueOrder->getOrderId();
-    if ($orderId != 'CKHD00006007'){
-      return;
-    }
     $revOrderDate = date_create($revenueOrder->getOrderDate());
     $revOrderDateFormatted = date_format($revOrderDate,'Ymd');
     $this->logger->info("Testing Order #".$orderId . "with orderDate = ".$revOrderDateFormatted);

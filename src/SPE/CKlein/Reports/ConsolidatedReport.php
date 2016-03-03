@@ -28,6 +28,7 @@ class  ConsolidatedReport {
   private $templateReportSheet;
   private $reportsFolder;
   private $reportsFilename;
+  private $reportsRecipients;
 
 
   public function __construct(){
@@ -36,6 +37,7 @@ class  ConsolidatedReport {
     $this->templateReportSheet = APPLICATION_ROOT_FOLDER.'/'.$this->config->get('reports')['cklein.consolidated.report.tempate.file'];
     $this->reportsFolder = $this->config->get("reports")["cklien.consolidated.reports.folder"];
     $this->reportsFilename = $this->config->get('reports')["cklien.consolidated.reports.filename"];
+    $this->reportsRecipients = $this->config->get('reports')["cklien.consolidated.reports.recipients.csv"];
   }
 
   public function setDwOrderInfo($dwOrderInfo){
@@ -81,7 +83,7 @@ class  ConsolidatedReport {
   public function emailReport($reportFile){
 
     $mail = new MailMessage();
-    $mail->addTo("venkat.v@quantiumsolutions.com");
+    $mail->addTo($this->reportsRecipients);
     //$mail->setFrom("noreply@specom.io");
     $mail->setSubject("ConsolidatedReport ");
     $mail->setBody("Consolidated Report !!!");

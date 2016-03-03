@@ -18,8 +18,18 @@ class RevenueReportUtils {
 
   private static function getReportFileNameFromDate($reportDate){
     $qcConfig=QCConfig::getInstance()->get('reports');
-    $reportFileName =  $qcConfig[QCConfigKey::_REVENUE_REPORT_FOLDER ]."/".$qcConfig[QCConfigKey::_REVENUE_REPORT_FILENAME_PREFIX].$reportDate.".".$qcConfig[QCConfigKey::_REVENUE_REPORT_FILENAME_EXT];
-    return $reportFileName;
+    $reportFileName =  $qcConfig[QCConfigKey::_REVENUE_REPORT_FOLDER ]."/20*".$qcConfig[QCConfigKey::_REVENUE_REPORT_FILENAME_INFIX].$reportDate.".".$qcConfig[QCConfigKey::_REVENUE_REPORT_FILENAME_EXT];
+    $reportFile = glob($reportFileName);
+    if (count($reportFile) == 0){
+      QCLogger::getInstance()->debug("No files found having name with the report date: ".$reportDate );
+      throw new Exception("No files found having name with the report date: ".$reportDate );
+    }
+    if (count($reportFile) > 1){
+      QCLogger::getInstance()->debug("Multiple filenames found having filename with reportDate ".$reportDate );
+      QCLogger::getInstance()->debug("Filenames found are: ".print_r($reportFile));
+      throw new Exception("Invalid arguments - multiple files found with name having reportDate ".$reportDate);
+    }
+    return $reportFile[0];
   }
 
 
@@ -30,13 +40,11 @@ class RevenueReportUtils {
         $reportFileName=StringUtils::split($arg,'=',2)[1];
         QCLogger::getInstance()->debug(__METHOD__ . " report filename found in argument = ".$reportFileName);
         return $reportFileName;
-    //break;
       }
       if (StringUtils::startsWith($arg,self::reportDateArgName)){
         $reportFileName=self::getReportFileNameFromDate(StringUtils::split($arg,'=',2)[1]);
         QCLogger::getInstance()->debug(__METHOD__ . " report filename constructed out of the date provided in argument = ".$reportFileName);
         return $reportFileName;
-    //break;
       }
     }
     //will come to this code block if there are no arguments having report file details

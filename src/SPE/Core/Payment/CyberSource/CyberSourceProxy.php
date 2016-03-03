@@ -128,8 +128,6 @@ class CyberSourceProxy {
     $this->csEndpoint = $csConfig[CSConfigKey::ONDEMAND_REQ_ENDPOINT];
 
     $credConfig = QCConfig::getCredConfig()->get(QCConfigKey::_CK_CREDENTIALS_CONFIG_SECTION);
-    //$this->csUsername = $csConfig[CSConfigKey::ONDEMAND_REQ_USERNAME];
-    //$this->csPassword = $credConfig[CSConfigKey::ONDEMAND_REQ_PASSWORD];
     $this->csUsername = $credConfig[CSConfigKey::ONDEMAND_REQ_USERNAME];
     $this->csPassword = $credConfig[CSConfigKey::ONDEMAND_REQ_PASSWORD];
 
@@ -138,7 +136,6 @@ class CyberSourceProxy {
   public function getTransactionDetailsXml($merchantReferenceNumber,$targetDate){
     $this->logger->info("BEGIN ".__METHOD__);
     $csClient = new Client();
-/*
     $response = $csClient->request('POST', $this->csEndpoint.$this->csQueryPath,[
       'auth' => [$this->csUsername, $this->csPassword],
       'form_params' => [
@@ -161,8 +158,7 @@ class CyberSourceProxy {
     }
     $this->logger->error("Error: invalid response from CyberSource");
     return null;
-*/
-   return $this->dummyXml;
+   //return $this->dummyXml;
 
   }
 

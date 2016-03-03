@@ -12,6 +12,8 @@ class PHPMailerProxy {
   private $logger;
   private $mailClient;
   private $config;
+  private $debugSendEmail=false;
+  private $debugSendEmailConfigKey = "cklein.consolidated.report.email.debug";
 
   public function __construct(){
 
@@ -31,7 +33,10 @@ class PHPMailerProxy {
     $this->mailClient = new PHPMailer();
     $this->mailClient->isSMTP();
     $this->mailClient->SMTPAuth = true;
-    //$this->mailClient->SMTPDebug = 1;
+    $this->debugSendEmail = $this->config->get('Logs')[$this->$debugSendEmailConfigKey];
+    if ($debugSendEmail){
+      $this->mailClient->SMTPDebug = 2;
+    }
     $this->mailClient->SMTPSecure = 'tls';
     $this->mailClient->Host = $aws['cklein.qc.aws.ses.host'];
     $this->mailClient->Port = $aws['cklein.qc.aws.ses.port'];
@@ -52,7 +57,12 @@ class PHPMailerProxy {
       $this->mailClient->Body = $message->getBody();
     }
     $this->mailClient->Subject = $message->getSubject();
-    $this->mailClient->addAddress($message->getToCsv());
+    $toRecipients = str_getcsv($message->getToCsv(),',');
+    foreach($toRecipients as $toRecipient){
+      if ($toRecipient) {
+        $this->mailClient->addAddress($toRecipient);
+      }
+    }
     $attachments=$message->getAttachments();
     if (isset($attachments)){
       foreach($attachments as $attachment){
@@ -61,6 +71,7 @@ class PHPMailerProxy {
       }
     }
     if (! $this->mailClient->send()){
+      $this->logger->error("Could not send email");
       $this->logger->error("Could not send email");
     }else{
       $this->logger->info("Mail sent successfully");
