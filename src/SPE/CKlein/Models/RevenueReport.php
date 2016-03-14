@@ -14,6 +14,15 @@ class RevenueReport {
     private $reportDate;
     private $orders = array();
     private $orderCount;
+    private $revenueReportFile;
+
+    public function getRevenueReportFile(){
+      return $this->revenueReportFile;
+    }
+
+    public function setRevenueReportFile($revenueReportFile){
+      $this->revenueReportFile = $revenueReportFile;
+    }
     
     public function getOrders(){
         return $this->orders;

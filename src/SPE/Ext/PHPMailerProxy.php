@@ -33,8 +33,8 @@ class PHPMailerProxy {
     $this->mailClient = new PHPMailer();
     $this->mailClient->isSMTP();
     $this->mailClient->SMTPAuth = true;
-    $this->debugSendEmail = $this->config->get('Logs')[$this->$debugSendEmailConfigKey];
-    if ($debugSendEmail){
+    $this->debugSendEmail = $this->config->get('logs')[$this->debugSendEmailConfigKey];
+    if ($this->debugSendEmail){
       $this->mailClient->SMTPDebug = 2;
     }
     $this->mailClient->SMTPSecure = 'tls';
@@ -70,8 +70,8 @@ class PHPMailerProxy {
         $this->mailClient->addAttachment($attachment['filepath']);
       }
     }
+    $this->logger->debug("mailClient ".print_r($this->mailClient,true));
     if (! $this->mailClient->send()){
-      $this->logger->error("Could not send email");
       $this->logger->error("Could not send email");
     }else{
       $this->logger->info("Mail sent successfully");

@@ -59,7 +59,7 @@ class Registry {
     //if( false === isset( $this->objects[$key] ) ) {
     if (!$this->isRegistered($key)){
       $this->logger->error("Key ".$key." not found");
-      throw new Exception('Invalid instance requested');
+      throw new Exception('Invalid Key ("'.$key.'") requested');
     }
 
     return $this->objects->offsetGet($key);

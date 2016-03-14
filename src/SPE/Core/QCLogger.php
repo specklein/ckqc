@@ -25,12 +25,12 @@ class QCLogger {
   //PHP being run in a single process - this will work
   public static function getInstance(){
 
-    $logFile = QCConfig::getInstance()->get('Logs')[self::$logFileKey];
-    $logLevel = self::getMonologLevel(QCConfig::getInstance()->get('Logs')[self::$logLevel]);
+    $logFile = QCConfig::getInstance()->get('logs')[self::$logFileKey];
+    $logLevel = self::getMonologLevel(QCConfig::getInstance()->get('logs')[self::$logLevel]);
     if (self::$qcLogger) {
      return self::$qcLogger;
     } else {
-      self::$qcLogger = new Logger(QCConfig::getInstance()->get('Logs')[self::$loggerNamespace]);
+      self::$qcLogger = new Logger(QCConfig::getInstance()->get('logs')[self::$loggerNamespace]);
       $handler = new StreamHandler($logFile, $logLevel);
       $handler->setFormatter(new PrintRLineFormatter());
       //$handler->setFormatter(new JsonFormatter());

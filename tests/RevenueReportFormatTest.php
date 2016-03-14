@@ -2,12 +2,14 @@
 
 use SPE\Core\Registry;
 use SPE\Core\QCLogger;
+use SPE\Core\BaseTestCase;
+use SPE\CKlein\Utils\RevenueReportUtils;
 
-class RevenueReportFormatTest extends PHPUnit_Framework_TestCase {
+class RevenueReportFormatTest extends BaseTestCase {
 
-  private static $csvRecords;
-  private static $revenueOrdersModel;
-  private static $logger;
+  protected static $csvRecords;
+  protected static $revenueOrdersModel;
+  protected static $logger;
   
   /**
   * @beforeClass
@@ -17,8 +19,11 @@ class RevenueReportFormatTest extends PHPUnit_Framework_TestCase {
     self::$logger = QCLogger::getInstance();
     self::$csvRecords = Registry::getInstance()->get('csvRecords');
     self::$revenueOrdersModel = Registry::getInstance()->get('revReportModel');
-  }
 
+    parent::setUpSharedFixtures();
+
+    
+  }
 
   public function testEachLineFormat(){
 

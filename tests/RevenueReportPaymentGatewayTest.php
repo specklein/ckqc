@@ -11,8 +11,8 @@ use SPE\Core\Payment\Transaction;
 
 class RevenueReportPaymentGatewayTest extends BaseTestCase {
 
-  private static $logger;
-  private static $revenueOrdersModel;
+  protected static $logger;
+  protected static $revenueOrdersModel;
   
 
   /**
@@ -55,7 +55,11 @@ class RevenueReportPaymentGatewayTest extends BaseTestCase {
     $this->logger = QCLogger::getInstance();
     $this->logger->info("BEGIN ". __METHOD__);
     $this->logger->debug("Received Revenue Order :".print_r($revenueOrder,true));
-
+    //check if the txn is a refund and if so ignore the Cybersource validation
+    if ($revenueOrder->isTxnARefund()){
+      $this->logger->debug("Transaction is a refund and ignoring the verification");
+      return;
+    }
     $orderId = $revenueOrder->getOrderId();
     $revOrderDate = date_create($revenueOrder->getOrderDate());
     $revOrderDateFormatted = date_format($revOrderDate,'Ymd');

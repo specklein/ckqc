@@ -10,6 +10,7 @@ class BaseTestListener extends \PHPUnit_Framework_BaseTestListener {
 
   private $logger;
   const FAILURE_TESTCASES_KEY = "failureTCs";
+  const ERR_TESTCASES_KEY = "errorTCs";
 
   public function __construct(){
     $this->logger=QCLogger::getInstance();
@@ -20,6 +21,7 @@ class BaseTestListener extends \PHPUnit_Framework_BaseTestListener {
     if (!Registry::getInstance()->isRegistered(self::FAILURE_TESTCASES_KEY)){
       $this->logger->debug("Test cases array not found in Registry - going to construct and add with key ".self::FAILURE_TESTCASES_KEY);
       Registry::getInstance()->add(self::FAILURE_TESTCASES_KEY,array());
+      Registry::getInstance()->add(self::ERR_TESTCASES_KEY,array());
     }
       
   }
@@ -50,6 +52,20 @@ class BaseTestListener extends \PHPUnit_Framework_BaseTestListener {
     }else{
       return 0;
     }
+  }
+
+  public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time){
+    $this->logger->info("Test ". $test->getName()." threw error");
+    $errorTestcases = Registry::getInstance()->get(self::ERR_TESTCASES_KEY);
+    $errorArray = array();
+    $errorArray[0]=$test;
+    $errorArray[1]=$e;
+    array_push($errorTestcases,$errorArray);
+    Registry::getInstance()->replace(self::ERR_TESTCASES_KEY, $errorTestcases);
+    $this->logger->info("Adding errored test ". $test->getName()." to the Registry ".print_r($errorTestcases,true));
+    $this->logger->info("End ".__METHOD__);
+
+
   }
 
 

@@ -26,6 +26,17 @@ class RevenueOrder {
       return $sum;
     }
 
+    public function isTxnARefund(){
+      foreach($this->orderLines as $orderLine){
+        if ($orderLine->getQty() < 0 ){
+          return true;
+        }
+      }
+      return false;
+
+    }
+
+
     public function getSumOfAllRecords(){
       return $this->getSumOfLinePrice()+$this->getSumOfShipLinePrice();
 

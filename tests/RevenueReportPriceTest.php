@@ -10,13 +10,14 @@ use SPE\CKlein\DAO\Orders\DwOrderDAO;
 
 class RevenueReportPriceTest extends BaseTestCase {
 
-  private static $logger;
-  private static $revenueOrdersModel;
+  protected static $logger;
+  protected static $revenueOrdersModel;
   
 
   /**
   * 
   */
+/*
   public static function setUpSharedFixtures() {
    // self::$logger = QCLogger::getInstance();
    // self::$revenueOrdersModel = Registry::getInstance()->get('revReportModel');
@@ -37,12 +38,13 @@ class RevenueReportPriceTest extends BaseTestCase {
 
   }
 
+*/
 
   public static function getOrders(){
 
-    self::setUpSharedFixtures();
+    parent::setUpSharedFixtures();
 
-    return $revenueOrders = self::$revenueOrdersModel->getOrders();
+    return $revenueOrders = parent::$revenueOrdersModel->getOrders();
 
   }
 
@@ -54,6 +56,12 @@ class RevenueReportPriceTest extends BaseTestCase {
     $this->logger = QCLogger::getInstance();
     $this->logger->info("BEGIN ". __METHOD__);
     $this->logger->debug("Received Revenue Order :".print_r($revenueOrder,true));
+
+    //check if the txn is a refund and if so ignore the Cybersource validation
+    if ($revenueOrder->isTxnARefund()){
+      $this->logger->debug("Transaction is a refund and ignoring the verification");
+      return;
+    }
 
     $orderId = $revenueOrder->getOrderId();
     $this->logger->info("Testing Order #".$orderId);

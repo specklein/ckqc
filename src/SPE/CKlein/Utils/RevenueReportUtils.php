@@ -9,6 +9,7 @@ use FlorianWolters\Component\Core\StringUtils;
 use DateTime;
 use SPE\CKlein\Reports\RevenueCSV;
 use SPE\CKlein\Mappers\RevenueCSV2Model;
+use Exception;
 
 class RevenueReportUtils {
 
@@ -18,7 +19,8 @@ class RevenueReportUtils {
 
   private static function getReportFileNameFromDate($reportDate){
     $qcConfig=QCConfig::getInstance()->get('reports');
-    $reportFileName =  $qcConfig[QCConfigKey::_REVENUE_REPORT_FOLDER ]."/20*".$qcConfig[QCConfigKey::_REVENUE_REPORT_FILENAME_INFIX].$reportDate.".".$qcConfig[QCConfigKey::_REVENUE_REPORT_FILENAME_EXT];
+    $reportFileName =  $qcConfig[QCConfigKey::_REVENUE_REPORT_FOLDER ]."/".$reportDate."*".$qcConfig[QCConfigKey::_REVENUE_REPORT_FILENAME_INFIX]."*.".$qcConfig[QCConfigKey::_REVENUE_REPORT_FILENAME_EXT];
+    QCLogger::getInstance()->debug("Computed reportsFilename using the input reportDate is ".$reportFileName);
     $reportFile = glob($reportFileName);
     if (count($reportFile) == 0){
       QCLogger::getInstance()->debug("No files found having name with the report date: ".$reportDate );
@@ -69,6 +71,18 @@ class RevenueReportUtils {
      $csvRecords = $revenueReport->getCsvRecords()->setOffset(1)->fetchAll();
      $revenueReportModel = RevenueCSV2Model::transform($csvRecords);
      return $revenueReportModel;
+   }
+
+   public static function getReportDate($arguments){
+
+     foreach($arguments as $arg){
+       if (StringUtils::startsWith($arg,self::reportDateArgName)){
+         return StringUtils::split($arg,'=',2)[1];
+       }
+
+     }
+     return self::getYdayDate();
+
    }
 
 

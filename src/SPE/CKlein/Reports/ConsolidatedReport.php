@@ -13,6 +13,7 @@ use SPE\Core\Document\OfficeExcelFactory;
 use SPE\Core\Models\MailMessage;
 use SPE\Ext\PHPMailerProxy;
 
+
 class  ConsolidatedReport {
 
   private $logger;
@@ -29,14 +30,23 @@ class  ConsolidatedReport {
   private $reportsFolder;
   private $reportsFilename;
   private $reportsRecipients;
+  private $revenueReportFile;
+  private $revenueReportDate;
 
 
-  public function __construct(){
+  public function __construct($argv){
+
     $this->logger = QCLogger::getInstance();
     $this->config = QCConfig::getInstance();
+
+    //get revenue report filename from arg
+    $this->revenueReportFile=RevenueReportUtils::getReportFileName($argv);
+    $this->revenueReportDate=RevenueReportUtils::getReportDate($argv);
+
     $this->templateReportSheet = APPLICATION_ROOT_FOLDER.'/'.$this->config->get('reports')['cklein.consolidated.report.tempate.file'];
     $this->reportsFolder = $this->config->get("reports")["cklien.consolidated.reports.folder"];
     $this->reportsFilename = $this->config->get('reports')["cklien.consolidated.reports.filename"];
+    $this->reportsFileExt = $this->config->get('reports')["cklien.consolidated.reports.file.ext"];
     $this->reportsRecipients = $this->config->get('reports')["cklien.consolidated.reports.recipients.csv"];
   }
 
@@ -58,26 +68,32 @@ class  ConsolidatedReport {
     }
   }
 
-  public function generate($revenueReportFile){
+  public function generate(){
     //get Revenue Model object
 
-    $revenueReportModel = RevenueReportUtils::getRevenueModel($revenueReportFile);
-    //get Cybersource data for each order
-    $csTxnInfoArray = Transaction::getCyberSourceTxnSummary($revenueReportModel);
-
+    $revenueReportModel = RevenueReportUtils::getRevenueModel($this->revenueReportFile);
+    
     //get Dw, WMS, Suplizer data from Db
     $dbData = $this->getDbData(array_keys($revenueReportModel->getOrders()));
+
+    //get Cybersource data for each order
+    $csTxnInfoArray = Transaction::getCyberSourceTxnSummary($revenueReportModel);
 
 
     $reportDataArray=ConsolidatedReportOrders2Array::getReportDataInArray($dbData,$revenueReportModel, $csTxnInfoArray);
     $this->logger->debug("reportData".print_r($reportDataArray,true));
-    $reportFile = $this->reportsFolder."/".$this->reportsFilename;
+    $reportFile = $this->getReportFile();
     //$reportFile = $this->reportsFilename;
-    $this->logger->debug("Report filename = ".$reportFile);
+    $this->logger->debug("Report file  = ".$reportFile);
     $consolidateReportFile = (new OfficeExcelFactory())->createDocument($this->templateReportSheet,$reportFile, "0",$reportDataArray,"A3");
     $this->logger->debug("Report file generated ".$reportFile);
     $this->emailReport($reportFile);
     
+  }
+
+
+  private function getReportFile(){
+     return $this->reportsFolder."/".$this->reportsFilename."_".$this->revenueReportDate.".".$this->reportsFileExt;
   }
 
   public function emailReport($reportFile){

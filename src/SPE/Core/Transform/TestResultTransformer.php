@@ -22,4 +22,19 @@ class TestResultTransformer {
     
   }
 
+  public function getErrorHtmlEmailMsg($errorTCs){
+ 
+    $htmlMessage = "<br/>";
+    foreach($errorTCs as $errorTC){
+      $htmlMessage = "<br/>".$htmlMessage ."Test case (". $errorTC[0]->getName(). ") encountered error <br/>".$errorTC[1]->getMessage()."<br/><br/>";
+    }
+    return $htmlMessage;
+    
+  }
+
+  public function getSetupErrorHtmlEmailMsg($exception){
+    $htmlMessage = "<br/><br/> Test setup exception encountered. Exception <br/>".$exception->getMessage()."<br/><br/><br/>";
+    return $htmlMessage;
+  }
+
 }

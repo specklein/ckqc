@@ -1,13 +1,14 @@
 <?php
 
+use SPE\Core\BaseTestCase;
 use SPE\Core\Registry;
 use SPE\Core\QCLogger;
 use SPE\CKlein\Models\RevenueReport;
 
-class RevenueReportOrderDatesTest extends PHPUnit_Framework_TestCase {
+class RevenueReportOrderDatesTest extends BaseTestCase {
 
-  private static $csvRecords;
-  private static $logger;
+  protected static $csvRecords;
+  protected static $logger;
   
   /**
   * @beforeClass

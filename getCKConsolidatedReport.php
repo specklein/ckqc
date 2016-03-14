@@ -11,10 +11,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 define('APPLICATION_ROOT_FOLDER', realpath(dirname(__FILE__) ));
 global $argv, $argc;
 
-//get revenue report filename from arg
-$revenueReportFile=RevenueReportUtils::getReportFileName($argv);
+$consolidatedReport = new ConsolidatedReport($argv);
 
-$consolidatedReport = new ConsolidatedReport();
-
-$consolidatedReport->generate($revenueReportFile);
+$consolidatedReport->generate();
 
