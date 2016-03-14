@@ -43,7 +43,7 @@ class RevenueReportWmsShipmentTest extends BaseTestCase {
 
     $wmsShipmentDAO = new WmsShipmentDAO();
     $wmsShipmentInfo = $wmsShipmentDAO->getShipmentInfo($orderId);
-    $this->assertNotNull($wmsShipmentInfo, "Shipment for order # ".$orderId.", is not found in db ");
+    $this->assertNotEmpty($wmsShipmentInfo, "Shipment for order # ".$orderId." is not found in db ");
     $this->logger->info("END ". __METHOD__);
 
   }
