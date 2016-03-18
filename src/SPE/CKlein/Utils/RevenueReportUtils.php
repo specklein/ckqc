@@ -50,9 +50,9 @@ class RevenueReportUtils {
       }
     }
     //will come to this code block if there are no arguments having report file details
-    //will construct using yday date time
-    $reportFileName =  self::getReportFileNameFromDate(self::getYdayDate()); 
-    QCLogger::getInstance()->debug(__METHOD__ . " report filename constructed using yday's date = ".$reportFileName);
+    //will construct using current date time
+    $reportFileName =  self::getReportFileNameFromDate(self::getTodaysDate()); 
+    QCLogger::getInstance()->debug(__METHOD__ . " report filename constructed using current date = ".$reportFileName);
     return $reportFileName;
     
 
@@ -81,8 +81,15 @@ class RevenueReportUtils {
        }
 
      }
-     return self::getYdayDate();
+     //return self::getYdayDate();
+     return self::getTodaysDate();
 
+   }
+
+   private static function getTodaysDate(){
+     $dateTime = new DateTime(date('d.m.Y'));
+     $reportDate = $dateTime->format('Ymd');
+     return $reportDate;
    }
 
 

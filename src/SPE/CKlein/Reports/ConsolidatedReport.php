@@ -127,25 +127,4 @@ class  ConsolidatedReport {
     
   }
 
-
-/*
-  private function getCyberSourceData($revenueReportModel){
-    $csTxnInfoArray = array();
-    foreach ($revenueReportModel->getOrders() as $revenueOrder){
-      $orderId = $revenueOrder[0]->getOrderId();
-      //this is just for testing...don't want to do this for all orders
-      if ($orderId != 'CKHD00006007'){
-        continue;
-      }else{
-      }
-      $revOrderDate = date_create($revenueOrder[0]->getOrderDate());
-      $revOrderDateFormatted = date_format($revOrderDate,'Ymd');
-      $csTxnInfo = Transaction::getCyberSourceTxnInfo($orderId, $revOrderDateFormatted);
-      $csTxnInfoArray[$orderId] = $csTxnInfo;
-    }
-    return $csTxnInfoArray;
-
-  }
-*/
-
 }

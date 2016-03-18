@@ -37,6 +37,10 @@ class ConsolidatedReportOrders2Array{
       $lineArray[]=$dbRecord[7];
       $lineArray[]=$dbRecord[8];
       $lineArray[]=$dbRecord[9];
+      //check if txn is refund - set Remarks
+      if ($revenueOrder->isTxnARefund()){
+        $lineArray[]="Refund";
+      }
 
       $reportDataArray[]=$lineArray;
     }
