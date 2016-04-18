@@ -120,7 +120,12 @@ class RevenueOrder {
         $this->repeatedSkus[$orderLine->getGtin()]=true;
       }
       $this->orderLines[] = $orderLine;
-      $this->sumOfLinePrice += ($orderLine->getPrice()*$orderLine->getQty());
+      if ($orderLine->getQty() < 0 ){
+        //if refund don't multiple by Qty
+        $this->sumOfLinePrice += $orderLine->getPrice();
+      }else {
+        $this->sumOfLinePrice += ($orderLine->getPrice()*$orderLine->getQty());
+      }
 
     }
     
