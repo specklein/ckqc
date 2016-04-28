@@ -35,7 +35,7 @@ class ConsolidatedReportOrders2Array{
       $lineArray[]='N/A';
       $lineArray[]=$dbRecord[6];
       $lineArray[]=$dbRecord[7];
-      $lineArray[]=$dbRecord[8];
+      $lineArray[]=$revenueOrder->getSumOfAllQuantities();
       $lineArray[]=$dbRecord[9];
       //check if txn is refund - set Remarks
       if ($revenueOrder->isTxnARefund()){
