@@ -23,7 +23,7 @@ class ConsolidatedReportOrders2Array{
       $revenueOrder = $revenueOrders[$dbRecord[0]][0];
       $lineArray[]=$revenueOrder->getOrderDate();
       $lineArray[]=$revenueOrder->getSumOfAllRecords();
-      $lineArray[]=$revenueOrder->getSumOfAllQuantities();
+      $lineArray[]=$revenueOrder->getSumOfLineQuantities();
       if(!isset($csTxnInfo[$dbRecord[0]])){
         //throw new Exception("CyberSource info not availble for orderId".$dbRecord[0]);
         continue;
@@ -35,7 +35,7 @@ class ConsolidatedReportOrders2Array{
       $lineArray[]='N/A';
       $lineArray[]=$dbRecord[6];
       $lineArray[]=$dbRecord[7];
-      $lineArray[]=$revenueOrder->getSumOfAllQuantities();
+      $lineArray[]=$revenueOrder->getSumOfLineQuantities();
       $lineArray[]=$dbRecord[9];
       //check if txn is refund - set Remarks
       if ($revenueOrder->isTxnARefund()){

@@ -18,6 +18,17 @@ class RevenueOrder {
     private $repeatedSkus = array();
     
 
+    public function getSumOfLineQuantities(){
+      $sum = 0;
+      foreach($this->orderLines as $orderLine){
+        if ($orderLine->getGtin() == '00009999010011'){
+          continue;
+        }
+        $sum = $sum + $orderLine->getQty();
+      }
+      return $sum;
+    }
+
     public function getSumOfAllQuantities(){
       $sum = 0;
       foreach($this->orderLines as $orderLine){
