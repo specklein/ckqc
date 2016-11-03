@@ -10,6 +10,7 @@ use SPE\CKlein\Models\RevenueReport;
 use SPE\Core\QCLogger;
 use SPE\Core\QCConfig;
 use SPE\Core\QCConfigKey;
+use SPE\CKlein\Utils\ShipUtils;
 
 class RevenueCSV2Model {
     
@@ -26,7 +27,7 @@ class RevenueCSV2Model {
     $logger= QCLogger::getInstance();
     $logger->addInfo("BEGIN RevenueCSV2Model::transform".PHP_EOL);
 
-    $shipmentQtin = QCConfig::getInstance()->get('reports')[QCConfigKey::_REVENUE_REPORT_SHIPMENT_GTIN_CONFIG_KEY];
+    $shipmentGtin = QCConfig::getInstance()->get('reports')[QCConfigKey::_REVENUE_REPORT_SHIPMENT_GTIN_CONFIG_KEY];
 
     $revenueOrders = array();
     $orderCount = 0;
@@ -47,7 +48,8 @@ class RevenueCSV2Model {
         $revenueOrders[$csvRecord[1]] = array();
         $revenueOrders[$csvRecord[1]][] = $revenueOrder;
       }
-      if ($csvRecord[5] == $shipmentQtin){
+      //if ($csvRecord[5] == $shipmentGtin){
+      if (ShipUtils::isGtinShippingItem($csvRecord[5])) {
         $revenueShipmentLine = new RevenueShipmentLine($csvRecord[5],$csvRecord[6],$csvRecord[7]);
         $revenueOrders[$csvRecord[1]][0]->addShipmentLine($revenueShipmentLine);
       }else{

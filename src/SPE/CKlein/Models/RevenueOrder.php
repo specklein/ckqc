@@ -2,6 +2,10 @@
 
 
 namespace SPE\CKlein\Models;
+
+
+use SPE\CKlein\Utils\ShipUtils;
+
 /*
 Class that holds values of all fields found in the revenue report
 related to one orderId. 
@@ -13,7 +17,7 @@ class RevenueOrder {
     private $orderLines = array();
     private $shipmentLines = array();
     private $orderLineCount=0;
-    private $shipmentQtin;
+    private $shipmentGtin;
     private $sumOfLinePrice=0;
     private $repeatedSkus = array();
     
@@ -21,9 +25,14 @@ class RevenueOrder {
     public function getSumOfLineQuantities(){
       $sum = 0;
       foreach($this->orderLines as $orderLine){
-        if ($orderLine->getGtin() == '00009999010011'){
+	//if item # is a shipping line # ignore the line
+
+	if (ShipUtils::isGtinShippingItem($orderLine->getGtin())) {
           continue;
         }
+        //if ($orderLine->getGtin() == '00009999010011'){
+        //  continue;
+        //}
         $sum = $sum + $orderLine->getQty();
       }
       return $sum;
