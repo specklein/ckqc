@@ -33,7 +33,7 @@ class ConsolidatedReportOrders2Array{
       $lineArray[]=$csTxnRecord->getPaymentAmount();
       $lineArray[]='N/A';
       $lineArray[]='N/A';
-      $lineArray[]=$dbRecord[6];
+      $lineArray[]=$dbRecord[10];
       $lineArray[]=$dbRecord[7];
       $lineArray[]=$revenueOrder->getSumOfLineQuantities();
       $lineArray[]=$dbRecord[9];
